@@ -24,7 +24,7 @@ public class GeneratorOfHTMLFile {
                         "         </b>\n" +
                         "         <ul>ФИО: " + fio + "</ul>\n" +
                         "         <ul>Дата рождения: " + dob + "</ul>\n" +
-                        "         <ul>email: " + phone + "</ul>\n" +
+                        "         <ul>Телефон: " + phone + "</ul>\n" +
                         "         <ul>email: " + email + "</ul>\n" +
                         "         <ul>skype: " + skype + "</ul>\n" +
                         "         <ul><b>Цель: </b>" + target + "</ul>\n" +
