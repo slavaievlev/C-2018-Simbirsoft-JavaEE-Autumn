@@ -1,29 +1,30 @@
 import java.io.*;
 import java.util.Properties;
 
-public class PropertiesHandler {
+// Класс, реализующий работу обработчика properties файлов.
+public class PropertiesHandler implements IFileHandler, IPropertiesHandler{
 
     private FileInputStream fileInputStream = null;
     private Properties prop = null;
 
     // Создает пустой properties файл.
-    private boolean CreateEmptyPropertiesFile(String path) {
+    public boolean CreateEmptyPropertiesFile(String path) {
         StringBuilder sProperties= new StringBuilder();
 
-        // Создаем шаблон пустого properties файла.
+        // Создаем пустой шаблон properties файла.
         sProperties.append(
                 "FIO=\n" +
-                "DOB=\n" +
-                "phone=\n" +
-                "email=\n" +
-                "skype=\n" +
-                "avatar=\n" +
-                "target=\n" +
-                "experiences=\n" +
-                "educations=\n" +
-                "additional_educations=\n" +
-                "skills=\n" +
-                "examples_code="
+                        "DOB=\n" +
+                        "phone=\n" +
+                        "email=\n" +
+                        "skype=\n" +
+                        "avatar=\n" +
+                        "target=\n" +
+                        "experiences=\n" +
+                        "educations=\n" +
+                        "additional_educations=\n" +
+                        "skills=\n" +
+                        "examples_code="
         );
 
         // Создаем папку для хранения файла properties.
