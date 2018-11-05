@@ -10,7 +10,7 @@ public class PropertiesHandler {
     private boolean CreateEmptyPropertiesFile(String path) {
         StringBuilder sProperties= new StringBuilder();
 
-        // Создаем html-код страницы.
+        // Создаем шаблон пустого properties файла.
         sProperties.append(
                 "FIO=\n" +
                 "DOB=\n" +
@@ -109,7 +109,7 @@ public class PropertiesHandler {
     }
 
     // Получает значения по указанному ключу из файла properties.
-    public String Get(String key) {
+    public String GetValue(String key) {
         if (fileInputStream == null) {
             return null;
         }

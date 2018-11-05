@@ -3,7 +3,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-public class FileGeneratorOfHTML {
+public class GeneratorOfHTMLFile {
     public boolean CreateFileHTML(String fio, String dob, String email, String skype,
             String avatar, String target, String phone, String experiences,
             String educations, String additional_educations, String skills, String examples_code, String path) {

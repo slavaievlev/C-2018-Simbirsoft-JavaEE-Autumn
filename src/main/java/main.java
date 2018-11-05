@@ -15,18 +15,18 @@ public class main {
         }
 
         // Получаем значения по ключам из файла.
-        String FIO = propHandler.Get("FIO");
-        String DOB = propHandler.Get("DOB");
-        String Email = propHandler.Get("email");
-        String Skype = propHandler.Get("skype");
-        String Avatar = propHandler.Get("avatar");
-        String Target = propHandler.Get("target");
-        String phone = propHandler.Get("phone");
-        String experiences = propHandler.Get("experiences");
-        String educations = propHandler.Get("educations");
-        String additional_educations = propHandler.Get("additional_educations");
-        String skills = propHandler.Get("skills");
-        String examples_code = propHandler.Get("examples_code");
+        String FIO = propHandler.GetValue("FIO");
+        String DOB = propHandler.GetValue("DOB");
+        String Email = propHandler.GetValue("email");
+        String Skype = propHandler.GetValue("skype");
+        String Avatar = propHandler.GetValue("avatar");
+        String Target = propHandler.GetValue("target");
+        String phone = propHandler.GetValue("phone");
+        String experiences = propHandler.GetValue("experiences");
+        String educations = propHandler.GetValue("educations");
+        String additional_educations = propHandler.GetValue("additional_educations");
+        String skills = propHandler.GetValue("skills");
+        String examples_code = propHandler.GetValue("examples_code");
 
         // Закрываем файл.
         if (!propHandler.Close()) {
@@ -54,7 +54,7 @@ public class main {
         }
 
         // Создаем генератор html-файлов.
-        FileGeneratorOfHTML fileGenHTML = new FileGeneratorOfHTML();
+        GeneratorOfHTMLFile fileGenHTML = new GeneratorOfHTMLFile();
 
         // Создаем html-файл.
         if (!fileGenHTML.CreateFileHTML(FIO, DOB, Email, Skype, Avatar, Target, phone, experiences,
