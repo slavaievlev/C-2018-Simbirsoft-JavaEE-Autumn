@@ -1,3 +1,7 @@
+package ru.slavaievlev.file_handlers.html.html_generators;
+
+import java.util.LinkedList;
+
 public class HTMLModel {
 
     // ФИО.
@@ -16,26 +20,28 @@ public class HTMLModel {
     private String avatar = null;
 
     // Цель резюме.
-    private String target = null;
+    private LinkedList<String> target = null;
 
     // Номер телефона.
     private String phone = null;
 
     // Опыт работы.
-    private String experiences = null;
+    private LinkedList<String> experiences = null;
 
     // Образование.
-    private String educations = null;
+    private LinkedList<String> educations = null;
 
     // Дополнительное образование.
-    private String additional_educations = null;
+    private LinkedList<String> additional_educations = null;
 
     // Навыки.
-    private String skills = null;
+    private LinkedList<String> skills = null;
 
     // Примеры кода.
-    private String examples_code = null;
+    private LinkedList<String> examples_code = null;
 
+
+    
     public String getFio() {
         return fio;
     }
@@ -76,11 +82,11 @@ public class HTMLModel {
         this.avatar = avatar;
     }
 
-    public String getTarget() {
+    public LinkedList<String> getTarget() {
         return target;
     }
 
-    public void setTarget(String target) {
+    public void setTarget(LinkedList<String> target) {
         this.target = target;
     }
 
@@ -92,43 +98,43 @@ public class HTMLModel {
         this.phone = phone;
     }
 
-    public String getExperiences() {
+    public LinkedList<String> getExperiences() {
         return experiences;
     }
 
-    public void setExperiences(String experiences) {
+    public void setExperiences(LinkedList<String> experiences) {
         this.experiences = experiences;
     }
 
-    public String getEducations() {
+    public LinkedList<String> getEducations() {
         return educations;
     }
 
-    public void setEducations(String educations) {
+    public void setEducations(LinkedList<String> educations) {
         this.educations = educations;
     }
 
-    public String getAdditional_educations() {
+    public LinkedList<String> getAdditional_educations() {
         return additional_educations;
     }
 
-    public void setAdditional_educations(String additional_educations) {
+    public void setAdditional_educations(LinkedList<String> additional_educations) {
         this.additional_educations = additional_educations;
     }
 
-    public String getSkills() {
+    public LinkedList<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(String skills) {
+    public void setSkills(LinkedList<String> skills) {
         this.skills = skills;
     }
 
-    public String getExamples_code() {
+    public LinkedList<String> getExamples_code() {
         return examples_code;
     }
 
-    public void setExamples_code(String examples_code) {
+    public void setExamples_code(LinkedList<String> examples_code) {
         this.examples_code = examples_code;
     }
 }

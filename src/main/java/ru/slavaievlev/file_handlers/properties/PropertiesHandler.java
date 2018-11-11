@@ -1,8 +1,17 @@
+package ru.slavaievlev.file_handlers.properties;
+
+import ru.slavaievlev.file_handlers.IFileHandler;
+
 import java.io.*;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Properties;
 
 // Класс, реализующий работу обработчика properties файлов.
-public class PropertiesHandler implements IFileHandler, IPropertiesHandler{
+public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
+
+    // Создаем модель properties файла.
+    private PropertiesModel propertiesModel = new PropertiesModel();
 
     private FileInputStream fileInputStream = null;
     private Properties prop = null;
@@ -12,20 +21,9 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler{
         StringBuilder sProperties= new StringBuilder();
 
         // Создаем пустой шаблон properties файла.
-        sProperties.append(
-                "FIO=\n" +
-                        "DOB=\n" +
-                        "phone=\n" +
-                        "email=\n" +
-                        "skype=\n" +
-                        "avatar=\n" +
-                        "target=\n" +
-                        "experiences=\n" +
-                        "educations=\n" +
-                        "additional_educations=\n" +
-                        "skills=\n" +
-                        "examples_code="
-        );
+        for(String s : propertiesModel.getFieldsList()) {
+            sProperties.append(s);
+        }
 
         // Создаем папку для хранения файла properties.
         String[] folders = path.split("/");
@@ -109,8 +107,26 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler{
         return true;
     }
 
+    // Разбивает пришедшую строку на части, если строка это подразумевает.
+    private String[] Split(String s) {
+        // Разбиваем строку на части.
+        String[] sArray = s.split("\", ?\"");
+
+        if (sArray.length > 1) {
+            for (int i = 0; i < sArray.length; i++) {
+
+                // Удаляем оставшиеся знаки '"' на концах бывшей строки.
+                sArray[i] = sArray[i].replaceAll("^[\"]", "");
+                sArray[i] = sArray[i].replaceAll("[\".*]$", "");
+
+            }
+        }
+
+        return sArray;
+    }
+
     // Получает значения по указанному ключу из файла properties.
-    public String GetValue(String key) {
+    public String GetValueInString(String key) {
         if (fileInputStream == null) {
             return null;
         }
@@ -120,17 +136,53 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler{
             // Ищем значение по ключу в файле properties.
             String notDecodedResult = prop.getProperty(key);
 
-            // Если ключ не был найден и getProperty везвращает null, то выходим.
+            // Если ключ не был найден и getProperty возвращает null, то выходим.
             if (notDecodedResult == null) {
                 return null;
             }
 
-            // Иначе перекодируем и записываем найденное значение в строку.
+            // Перекодируем и запишем найденное значение в строку.
             byte[] bytesArray = notDecodedResult.getBytes("ISO-8859-1");
             result = new String(bytesArray);
+
         } catch (UnsupportedEncodingException e) {
             return null;
         }
+
+        return result;
+    }
+
+    // Получает значения по указанному ключу из файла properties.
+    public LinkedList<String> GetValueInLinkedList(String key) {
+        if (fileInputStream == null) {
+            return null;
+        }
+
+        String preResult = null;
+        LinkedList<String> result = new LinkedList<String>();
+        try {
+            // Ищем значение по ключу в файле properties.
+            String notDecodedResult = prop.getProperty(key);
+
+            // Если ключ не был найден и getProperty возвращает null, то выходим.
+            if (notDecodedResult == null) {
+                return null;
+            }
+
+            // Перекодируем и запишем найденное значение в строку.
+            byte[] bytesArray = notDecodedResult.getBytes("ISO-8859-1");
+            preResult = new String(bytesArray);
+
+            // Разбиваем строку на части, если значение состоит из нескольких частей.
+            String[] sArray = Split(preResult);
+
+            // Записываем полученные строки в список.
+            result.addAll(Arrays.asList(sArray));
+
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+
         return result;
     }
 }
