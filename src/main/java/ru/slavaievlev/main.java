@@ -34,7 +34,7 @@ public class main {
         model.setExperiences(propHandler.GetValueInLinkedList("experiences"));
         model.setEducations(propHandler.GetValueInLinkedList("educations"));
         model.setAdditional_educations(propHandler.GetValueInLinkedList("additional_educations"));
-        model.setSkills(propHandler.GetValueInLinkedList("skills"));
+        model.setSkills(propHandler.GetValueInHashMap("skills"));
         model.setExamples_code(propHandler.GetValueInLinkedList("examples_code"));
 
         // Закрываем файл.

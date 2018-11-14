@@ -3,9 +3,7 @@ package ru.slavaievlev.file_handlers.properties;
 import ru.slavaievlev.file_handlers.IFileHandler;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Properties;
+import java.util.*;
 
 // Класс, реализующий работу обработчика properties файлов.
 public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
@@ -178,6 +176,100 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
 
             // Записываем полученные строки в список.
             result.addAll(Arrays.asList(sArray));
+
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+
+        return result;
+    }
+
+    // Синхронно сортирует два входящих массива по значениям массива values и записывает в hashMap, который учитывает порядок
+    // добавления элементов.
+    private LinkedHashMap<String, Integer> SortToHashMap(String[] keys, int[] values, LinkedHashMap<String, Integer> linkedHashMap) {
+
+        // Сортируем по значениям.
+        for (int i = 0; i < keys.length - 1; i++) {
+            if (values[i + 1] > values[i]) {
+                int intX = values[i];
+                String sX = keys[i];
+
+                values[i] = values[i + 1];
+                keys[i] = keys[i + 1];
+
+                values[i + 1] = intX;
+                keys[i + 1] = sX;
+                i -= 2;
+            }
+        }
+
+        for (int i = 0; i < keys.length; i++) {
+            linkedHashMap.put(keys[i], values[i]);
+        }
+
+        return linkedHashMap;
+    }
+
+    // Делим полученные строки на ключи и значения (должны быть записаны в формате - ключ : "значение", ...)
+    private LinkedHashMap<String, Integer> AddKeyAndValue(String[] sArray, LinkedHashMap<String, Integer> linkedHashMap) {
+
+        // Создаем два массива в целях реализации сортировки по значениям.
+        String[] keys = new String[sArray.length];
+        int[] values = new int[sArray.length];
+
+        // Идем по всем значениям одного ключа из property.
+        for (int i = 0; i < sArray.length; i++) {
+            // Пытаемся Разбить текущую строку на ключ и значение.
+            String[] sKeyAndValue = sArray[i].split(": \"");
+
+            // Если получилось разбить строку, то удаляем с правого конца знак " и
+            // записываем ключ и значение в два массива для последующей синхронной сортировки.
+            if (sKeyAndValue.length > 1) {
+                // Удаляем оставшиеся справа знаки.
+                sKeyAndValue[1] = sKeyAndValue[1].replaceAll("[\".*]$", "");
+
+                // Записываем найденные значения.
+                keys[i] = sKeyAndValue[0];
+                values[i] = Integer.parseInt(sKeyAndValue[1]);
+            } else {
+                // Записываем значение = 0, если строку разделить не удалось.
+                keys[i] = sKeyAndValue[0];
+                values[i] = 0;
+            }
+        }
+
+        // Сортируем синхронно оба массива по значениям из второго массива (values).
+        linkedHashMap = SortToHashMap(keys, values, linkedHashMap);
+
+        return linkedHashMap;
+    }
+
+    // Получает значения по указанному ключу из файла properties.
+    public LinkedHashMap<String, Integer> GetValueInHashMap(String key) {
+        if (fileInputStream == null) {
+            return null;
+        }
+
+        String preResult = null;
+        LinkedHashMap<String, Integer> result = new LinkedHashMap<String, Integer>();
+        try {
+            // Ищем значение по ключу в файле properties.
+            String notDecodedResult = prop.getProperty(key);
+
+            // Если ключ не был найден и getProperty возвращает null, то выходим.
+            if (notDecodedResult == null) {
+                return null;
+            }
+
+            // Перекодируем и запишем найденное значение в строку.
+            byte[] bytesArray = notDecodedResult.getBytes("ISO-8859-1");
+            preResult = new String(bytesArray);
+
+            // Разбиваем строку на части, если значение состоит из нескольких частей.
+            String[] sArray = Split(preResult);
+
+            // Записываем полученные строки в LinkedHashMap.
+            result = AddKeyAndValue(sArray, result);
 
         } catch (UnsupportedEncodingException e) {
             return null;

@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.LinkedList;
+import java.util.*;
 
 import ru.slavaievlev.file_handlers.html.html_objects.*;
 
@@ -126,9 +126,16 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("Навыки: "));
         listOfHtmlObjects.add(bEnd);
-        for(String s : model.getSkills()) {
+        LinkedHashMap<String, Integer> hashMap = model.getSkills();
+        Set<String> keys = hashMap.keySet();
+        for(String s : keys) {
             listOfHtmlObjects.add(li);
-            listOfHtmlObjects.add(new Text(s));
+            int value;
+            if ((value = hashMap.get(s)) != 0) {
+                listOfHtmlObjects.add(new Text(s + " (" + value + " мес.)"));
+            } else {
+                listOfHtmlObjects.add(new Text(s));
+            }
             listOfHtmlObjects.add(liEnd);
         }
         listOfHtmlObjects.add(ulEnd);
@@ -139,8 +146,7 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(bEnd);
         for(String s : model.getExamples_code()) {
             listOfHtmlObjects.add(li);
-            Link linkToCode = new Link(s, s);
-            listOfHtmlObjects.add(linkToCode);
+            listOfHtmlObjects.add(new Link(s, s));
             listOfHtmlObjects.add(liEnd);
         }
         listOfHtmlObjects.add(ulEnd);

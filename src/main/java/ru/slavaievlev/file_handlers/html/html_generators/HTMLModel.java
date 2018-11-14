@@ -1,5 +1,6 @@
 package ru.slavaievlev.file_handlers.html.html_generators;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 public class HTMLModel {
@@ -35,13 +36,13 @@ public class HTMLModel {
     private LinkedList<String> additional_educations = null;
 
     // Навыки.
-    private LinkedList<String> skills = null;
+    private LinkedHashMap<String, Integer> skills = null;
 
     // Примеры кода.
     private LinkedList<String> examples_code = null;
 
 
-    
+
     public String getFio() {
         return fio;
     }
@@ -122,11 +123,11 @@ public class HTMLModel {
         this.additional_educations = additional_educations;
     }
 
-    public LinkedList<String> getSkills() {
+    public LinkedHashMap<String, Integer> getSkills() {
         return skills;
     }
 
-    public void setSkills(LinkedList<String> skills) {
+    public void setSkills(LinkedHashMap<String, Integer> skills) {
         this.skills = skills;
     }
 
