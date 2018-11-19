@@ -6,12 +6,16 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.*;
 
+import ru.slavaievlev.file_handlers.HandlerOfNullString;
 import ru.slavaievlev.file_handlers.html.html_objects.*;
 
 // Класс, реализующий работу генератора html файлов.
 public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
 
-    public boolean CreateFileHTML(HTMLModel model, String path) {
+    public boolean CreateFileHTML(HTMLModel model, String pathToHTMLFile, String pathToHTMLFileForSpringBoot) {
+
+        // Создаем обработчик null строк.
+        HandlerOfNullString nullHandler = new HandlerOfNullString();
 
         // Создаем строку, которая будет принимать html-код.
         StringBuilder sbHtml= new StringBuilder();
@@ -34,7 +38,7 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         UlEnd ulEnd = new UlEnd();
         Li li = new Li();
         LiEnd liEnd = new LiEnd();
-        Image image = new Image(model.getAvatar(), 340);
+        Image image = new Image(nullHandler.fromNullToEmptyString(model.getAvatar()), 340);
         Tab tab = new Tab();
 
         // Создаем список, который будет формировать html-код.
@@ -55,37 +59,39 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
 
         listOfHtmlObjects.add(ul);
         listOfHtmlObjects.add(new Text("ФИО: "));
-        listOfHtmlObjects.add(new Text(model.getFio()));
+        listOfHtmlObjects.add(new Text(nullHandler.fromNullToEmptyString(model.getFio())));
         listOfHtmlObjects.add(ulEnd);
 
         listOfHtmlObjects.add(ul);
         listOfHtmlObjects.add(new Text("Дата рождения: "));
-        listOfHtmlObjects.add(new Text(model.getDob()));
+        listOfHtmlObjects.add(new Text(nullHandler.fromNullToEmptyString(model.getDob())));
         listOfHtmlObjects.add(ulEnd);
 
         listOfHtmlObjects.add(ul);
         listOfHtmlObjects.add(new Text("Номер телефона: "));
-        listOfHtmlObjects.add(new Text(model.getPhone()));
+        listOfHtmlObjects.add(new Text(nullHandler.fromNullToEmptyString(model.getPhone())));
         listOfHtmlObjects.add(ulEnd);
 
         listOfHtmlObjects.add(ul);
         listOfHtmlObjects.add(new Text("Email: "));
-        listOfHtmlObjects.add(new Text(model.getEmail()));
+        listOfHtmlObjects.add(new Text(nullHandler.fromNullToEmptyString(model.getEmail())));
         listOfHtmlObjects.add(ulEnd);
 
         listOfHtmlObjects.add(ul);
         listOfHtmlObjects.add(new Text("Skype: "));
-        listOfHtmlObjects.add(new Text(model.getSkype()));
+        listOfHtmlObjects.add(new Text(nullHandler.fromNullToEmptyString(model.getSkype())));
         listOfHtmlObjects.add(ulEnd);
 
         listOfHtmlObjects.add(ul);
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("Цель: "));
         listOfHtmlObjects.add(bEnd);
-        for(String s : model.getTarget()) {
-            listOfHtmlObjects.add(li);
-            listOfHtmlObjects.add(new Text(s));
-            listOfHtmlObjects.add(liEnd);
+        if (model.getTarget() != null) {
+            for(String s : model.getTarget()) {
+                listOfHtmlObjects.add(li);
+                listOfHtmlObjects.add(new Text(s));
+                listOfHtmlObjects.add(liEnd);
+            }
         }
         listOfHtmlObjects.add(ulEnd);
 
@@ -93,10 +99,12 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("Опыт работы: "));
         listOfHtmlObjects.add(bEnd);
-        for(String s : model.getExperiences()) {
-            listOfHtmlObjects.add(li);
-            listOfHtmlObjects.add(new Text(s));
-            listOfHtmlObjects.add(liEnd);
+        if (model.getExperiences() != null) {
+            for(String s : model.getExperiences()) {
+                listOfHtmlObjects.add(li);
+                listOfHtmlObjects.add(new Text(s));
+                listOfHtmlObjects.add(liEnd);
+            }
         }
         listOfHtmlObjects.add(ulEnd);
 
@@ -104,10 +112,12 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("Образование: "));
         listOfHtmlObjects.add(bEnd);
-        for(String s : model.getEducations()) {
-            listOfHtmlObjects.add(li);
-            listOfHtmlObjects.add(new Text(s));
-            listOfHtmlObjects.add(liEnd);
+        if (model.getEducations() != null) {
+            for(String s : model.getEducations()) {
+                listOfHtmlObjects.add(li);
+                listOfHtmlObjects.add(new Text(s));
+                listOfHtmlObjects.add(liEnd);
+            }
         }
         listOfHtmlObjects.add(ulEnd);
 
@@ -115,10 +125,12 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("Дополнительное образование: "));
         listOfHtmlObjects.add(bEnd);
-        for(String s : model.getAdditional_educations()) {
-            listOfHtmlObjects.add(li);
-            listOfHtmlObjects.add(new Text(s));
-            listOfHtmlObjects.add(liEnd);
+        if (model.getAdditional_educations() != null) {
+            for(String s : model.getAdditional_educations()) {
+                listOfHtmlObjects.add(li);
+                listOfHtmlObjects.add(new Text(s));
+                listOfHtmlObjects.add(liEnd);
+            }
         }
         listOfHtmlObjects.add(ulEnd);
 
@@ -126,17 +138,19 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("Навыки: "));
         listOfHtmlObjects.add(bEnd);
-        LinkedHashMap<String, Integer> hashMap = model.getSkills();
-        Set<String> keys = hashMap.keySet();
-        for(String s : keys) {
-            listOfHtmlObjects.add(li);
-            int value;
-            if ((value = hashMap.get(s)) != 0) {
-                listOfHtmlObjects.add(new Text(s + " (" + value + " мес.)"));
-            } else {
-                listOfHtmlObjects.add(new Text(s));
+        if (model.getSkills() != null) {
+            LinkedHashMap<String, Integer> hashMap = model.getSkills();
+            Set<String> keys = hashMap.keySet();
+            for(String s : keys) {
+                listOfHtmlObjects.add(li);
+                int value;
+                if ((value = hashMap.get(s)) != 0) {
+                    listOfHtmlObjects.add(new Text(s + " (" + value + " мес.)"));
+                } else {
+                    listOfHtmlObjects.add(new Text(s));
+                }
+                listOfHtmlObjects.add(liEnd);
             }
-            listOfHtmlObjects.add(liEnd);
         }
         listOfHtmlObjects.add(ulEnd);
 
@@ -144,10 +158,12 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("Примеры кода: "));
         listOfHtmlObjects.add(bEnd);
-        for(String s : model.getExamples_code()) {
-            listOfHtmlObjects.add(li);
-            listOfHtmlObjects.add(new Link(s, s));
-            listOfHtmlObjects.add(liEnd);
+        if (model.getExamples_code() != null) {
+            for(String s : model.getExamples_code()) {
+                listOfHtmlObjects.add(li);
+                listOfHtmlObjects.add(new Link(s, s));
+                listOfHtmlObjects.add(liEnd);
+            }
         }
         listOfHtmlObjects.add(ulEnd);
 
@@ -200,18 +216,28 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         }
 
         // Создаем html-файл и вставляем в него html-код.
+        // ОБНОВЛЕНИЕ: Открываем .mustache файл и пишем туда html-код для SpringBoot (код одинаковый).
         try {
-            BufferedWriter sb = null;
+            BufferedWriter bwHtml = null;
+            BufferedWriter bwHtmlForSpringBoot = null;
 
             try {
-                sb = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
-                sb.write(sbHtml.toString());
+                bwHtml = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathToHTMLFile),
+                        "UTF-8"));
+                bwHtml.write(sbHtml.toString());
+
+                bwHtmlForSpringBoot = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(pathToHTMLFileForSpringBoot), "UTF-8"));
+                bwHtmlForSpringBoot.write(sbHtml.toString());
 
             } catch (IOException e) {
                 return false;
             } finally {
-                if (sb != null) {
-                    sb.close();
+                if (bwHtml != null) {
+                    bwHtml.close();
+                }
+                if (bwHtmlForSpringBoot != null) {
+                    bwHtmlForSpringBoot.close();
                 }
             }
 

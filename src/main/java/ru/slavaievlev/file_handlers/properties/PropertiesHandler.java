@@ -3,6 +3,7 @@ package ru.slavaievlev.file_handlers.properties;
 import ru.slavaievlev.file_handlers.IFileHandler;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 // Класс, реализующий работу обработчика properties файлов.
@@ -62,7 +63,7 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
     }
 
     // Открывает файл properties.
-    public boolean Open(String path) {
+    synchronized public boolean Open(String path) {
 
         if (path == null) {
             return false;
@@ -89,7 +90,7 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
     }
 
     // Закрывает файл properties.
-    public boolean Close() {
+    synchronized public boolean Close() {
         try {
             if (fileInputStream != null) {
                 fileInputStream.close();
@@ -121,6 +122,12 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
         }
 
         return sArray;
+    }
+
+    // Получить набор ключей properties файла.
+    public Set getKeys() {
+        Set result = prop.keySet();
+        return result;
     }
 
     // Получает значения по указанному ключу из файла properties.
