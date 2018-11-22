@@ -4,30 +4,24 @@ import ru.slavaievlev.file_handlers.html.html_generators.HTMLModel;
 
 import java.util.Set;
 
-public class PropertyReader extends Thread {
+// Объект, начинающий чтение property файлов по определенным ключам и записывающий полученные
+// данные в объект html модели (HTMLModel).
+public class StarterReadingProperty {
 
-    // Модель html-файла.
+    private PropertiesHandler propertiesHandler;
+    private String pathToPropertyFiles;
+    private String nameOfPropertyFile;
     private HTMLModel model;
 
-    // Обработчик properties файла.
-    private PropertiesHandler propertiesHandler;
-
-    // Путь до папки с property файлами.
-    private String pathToPropertyFiles;
-
-    // Название property файла.
-    private String nameOfPropertyFile;
-
-    public PropertyReader(HTMLModel model, String pathToPropertyFiles, String nameOfPropertyFile) {
-        this.model = model;
-        this.propertiesHandler = new PropertiesHandler();
+    public StarterReadingProperty(PropertiesHandler propertiesHandler, String pathToPropertyFiles,
+                                  String nameOfPropertyFile, HTMLModel model) {
+        this.propertiesHandler = propertiesHandler;
         this.pathToPropertyFiles = pathToPropertyFiles;
         this.nameOfPropertyFile = nameOfPropertyFile;
+        this.model = model;
     }
 
-    // Старт потока.
-    public void run() {
-
+    public void start() {
         // Открывам файл properties в обработчике.
         if (!propertiesHandler.Open(pathToPropertyFiles + nameOfPropertyFile)) {
             System.out.println("Не удалось открыть файл properties по адресу '" +

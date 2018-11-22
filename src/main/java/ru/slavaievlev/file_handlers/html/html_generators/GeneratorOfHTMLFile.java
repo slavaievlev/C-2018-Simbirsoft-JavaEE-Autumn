@@ -6,13 +6,39 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import ru.slavaievlev.file_handlers.HandlerOfNullString;
 import ru.slavaievlev.file_handlers.html.html_objects.*;
+import ru.slavaievlev.file_handlers.properties.PropertyService;
+import ru.slavaievlev.main;
 
-// Класс, реализующий работу генератора html файлов.
+// Класс, генерирующий html-файлы.
+@Component
 public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
 
-    public boolean CreateFileHTML(HTMLModel model, String pathToHTMLFile, String pathToHTMLFileForSpringBoot) {
+    // Сервис, занимающийся управлением работой обработчиков property файлов.
+    PropertyService propertyService;
+
+    private HTMLModel model;
+    private String pathToHTMLFile;
+    private String pathToHTMLFileForSpringBoot;
+
+    @Autowired
+    public GeneratorOfHTMLFile(@Qualifier ("propertyService") PropertyService propertyService) {
+        this.propertyService = propertyService;
+    }
+
+    public boolean CreateFileHTML() throws InterruptedException {
+
+        model = main.getHtmlModel();
+        pathToHTMLFile = main.getPathToHtmlFile();
+        pathToHTMLFileForSpringBoot = main.getPathToHtmlFileForSpringboot();
+
+        // Получаем из property файлов данные (запишутся в main.MODEL).
+        propertyService.getData();
+
 
         // Создаем обработчик null строк.
         HandlerOfNullString nullHandler = new HandlerOfNullString();
