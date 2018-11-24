@@ -21,18 +21,19 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
     // Сервис, занимающийся управлением работой обработчиков property файлов.
     PropertyService propertyService;
 
-    private HTMLModel model;
+    private Model model;
     private String pathToHTMLFile;
     private String pathToHTMLFileForSpringBoot;
 
     @Autowired
-    public GeneratorOfHTMLFile(@Qualifier ("propertyService") PropertyService propertyService) {
+    public GeneratorOfHTMLFile(@Qualifier ("propertyService") PropertyService propertyService,
+                               @Qualifier("model") Model model) {
         this.propertyService = propertyService;
+        this.model = model;
     }
 
     public boolean CreateFileHTML() throws InterruptedException {
 
-        model = main.getHtmlModel();
         pathToHTMLFile = main.getPathToHtmlFile();
         pathToHTMLFileForSpringBoot = main.getPathToHtmlFileForSpringboot();
 

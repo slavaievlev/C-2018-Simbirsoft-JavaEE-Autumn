@@ -2,7 +2,6 @@ package ru.slavaievlev;
 
 import org.springframework.context.ApplicationContext;
 import ru.slavaievlev.file_handlers.html.html_generators.GeneratorOfHTMLFile;
-import ru.slavaievlev.file_handlers.html.html_generators.HTMLModel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,9 +20,6 @@ public class main {
     private static final String PATH_TO_HTML_FILE = "resources/index.html";
     private static final String PATH_TO_HTML_FILE_FOR_SPRINGBOOT = "src/main/resources/templates/greeting.mustache";
 
-    // Создаем модель html-файла.
-    private static final HTMLModel HTML_MODEL = new HTMLModel();
-
 
     // Геттеры/сеттеры
     public static String getPathToPropertyFiles() {
@@ -36,10 +32,6 @@ public class main {
 
     public static String getPropertyFile2() {
         return PROPERTY_FILE2;
-    }
-
-    public static HTMLModel getHtmlModel() {
-        return HTML_MODEL;
     }
 
     public static String getPathToHtmlFile() {

@@ -1,16 +1,15 @@
 package ru.slavaievlev.file_handlers.properties;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ru.slavaievlev.file_handlers.html.html_generators.HTMLModel;
+import ru.slavaievlev.file_handlers.html.html_generators.Model;
 import ru.slavaievlev.main;
-
-import java.util.Set;
 
 @Component
 public class PropertyReaderForPropertyTwo extends Thread implements IPropertyReader {
 
     // Модель html-файла.
-    private HTMLModel model;
+    private Model model;
 
     // Обработчик properties файла.
     private PropertiesHandler propertiesHandler;
@@ -21,8 +20,8 @@ public class PropertyReaderForPropertyTwo extends Thread implements IPropertyRea
     // Название property файла.
     private String nameOfPropertyFile;
 
-    public PropertyReaderForPropertyTwo() {
-        this.model = main.getHtmlModel();
+    public PropertyReaderForPropertyTwo(@Qualifier("model") Model model) {
+        this.model = model;
         this.propertiesHandler = new PropertiesHandler();
         this.pathToPropertyFiles = main.getPathToPropertyFiles();
         this.nameOfPropertyFile = main.getPropertyFile2();
