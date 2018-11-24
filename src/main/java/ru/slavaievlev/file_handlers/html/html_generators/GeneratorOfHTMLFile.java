@@ -26,13 +26,15 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
     private String pathToHTMLFileForSpringBoot;
 
     @Autowired
-    public GeneratorOfHTMLFile(@Qualifier ("propertyService") PropertyService propertyService) {
+    public GeneratorOfHTMLFile(@Qualifier ("propertyService") PropertyService propertyService,
+                               @Qualifier ("resumeDto") ResumeDto resumeDto) {
         this.propertyService = propertyService;
+        this.model = resumeDto;
     }
 
     public boolean CreateFileHTML() throws InterruptedException {
 
-        model = main.getHtmlModel();
+
         pathToHTMLFile = main.getPathToHtmlFile();
         pathToHTMLFileForSpringBoot = main.getPathToHtmlFileForSpringboot();
 

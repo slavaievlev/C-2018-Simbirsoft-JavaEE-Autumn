@@ -21,9 +21,6 @@ public class main {
     private static final String PATH_TO_HTML_FILE = "resources/index.html";
     private static final String PATH_TO_HTML_FILE_FOR_SPRINGBOOT = "src/main/resources/templates/resume.html";
 
-    // Создаем модель html-файла.
-    private static final ResumeDto HTML_MODEL = new ResumeDto();
-
 
     // Геттеры/сеттеры
     public static String getPathToPropertyFiles() {
@@ -38,10 +35,6 @@ public class main {
         return PROPERTY_FILE2;
     }
 
-    public static ResumeDto getHtmlModel() {
-        return HTML_MODEL;
-    }
-
     public static String getPathToHtmlFile() {
         return PATH_TO_HTML_FILE;
     }
@@ -53,11 +46,11 @@ public class main {
     public static void main(String[] args) throws InterruptedException{
 
         // Вытягиваем генератор html-файлов.
-//        ApplicationContext context = SpringApplication.run(main.class, args);
-//        GeneratorOfHTMLFile fileGenHTML = context.getBean(GeneratorOfHTMLFile.class);
-//
-//        // Запускаем генерацию html-файла.
-//        fileGenHTML.CreateFileHTML();
+        ApplicationContext context = SpringApplication.run(main.class, args);
+        GeneratorOfHTMLFile fileGenHTML = context.getBean(GeneratorOfHTMLFile.class);
+
+        // Запускаем генерацию html-файла.
+        fileGenHTML.CreateFileHTML();
 
         System.out.println("HTML files is created!");
     }
