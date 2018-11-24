@@ -1,6 +1,6 @@
 package ru.slavaievlev.file_handlers.properties;
 
-import ru.slavaievlev.file_handlers.html.html_generators.HTMLModel;
+import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
 
 import java.util.Set;
 
@@ -11,10 +11,10 @@ public class StarterReadingProperty {
     private PropertiesHandler propertiesHandler;
     private String pathToPropertyFiles;
     private String nameOfPropertyFile;
-    private HTMLModel model;
+    private ResumeDto model;
 
     public StarterReadingProperty(PropertiesHandler propertiesHandler, String pathToPropertyFiles,
-                                  String nameOfPropertyFile, HTMLModel model) {
+                                  String nameOfPropertyFile, ResumeDto model) {
         this.propertiesHandler = propertiesHandler;
         this.pathToPropertyFiles = pathToPropertyFiles;
         this.nameOfPropertyFile = nameOfPropertyFile;

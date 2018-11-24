@@ -2,7 +2,7 @@ package ru.slavaievlev;
 
 import org.springframework.context.ApplicationContext;
 import ru.slavaievlev.file_handlers.html.html_generators.GeneratorOfHTMLFile;
-import ru.slavaievlev.file_handlers.html.html_generators.HTMLModel;
+import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,10 +19,10 @@ public class main {
 
     // Путь до html-файлов, которые будут генерироваться генератором html-шаблонов.
     private static final String PATH_TO_HTML_FILE = "resources/index.html";
-    private static final String PATH_TO_HTML_FILE_FOR_SPRINGBOOT = "src/main/resources/templates/greeting.mustache";
+    private static final String PATH_TO_HTML_FILE_FOR_SPRINGBOOT = "src/main/resources/templates/resume.html";
 
     // Создаем модель html-файла.
-    private static final HTMLModel HTML_MODEL = new HTMLModel();
+    private static final ResumeDto HTML_MODEL = new ResumeDto();
 
 
     // Геттеры/сеттеры
@@ -38,7 +38,7 @@ public class main {
         return PROPERTY_FILE2;
     }
 
-    public static HTMLModel getHtmlModel() {
+    public static ResumeDto getHtmlModel() {
         return HTML_MODEL;
     }
 
@@ -53,11 +53,11 @@ public class main {
     public static void main(String[] args) throws InterruptedException{
 
         // Вытягиваем генератор html-файлов.
-        ApplicationContext context = SpringApplication.run(main.class, args);
-        GeneratorOfHTMLFile fileGenHTML = context.getBean(GeneratorOfHTMLFile.class);
-
-        // Запускаем генерацию html-файла.
-        fileGenHTML.CreateFileHTML();
+//        ApplicationContext context = SpringApplication.run(main.class, args);
+//        GeneratorOfHTMLFile fileGenHTML = context.getBean(GeneratorOfHTMLFile.class);
+//
+//        // Запускаем генерацию html-файла.
+//        fileGenHTML.CreateFileHTML();
 
         System.out.println("HTML files is created!");
     }

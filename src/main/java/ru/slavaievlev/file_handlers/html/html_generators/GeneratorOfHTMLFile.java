@@ -21,7 +21,7 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
     // Сервис, занимающийся управлением работой обработчиков property файлов.
     PropertyService propertyService;
 
-    private HTMLModel model;
+    private ResumeDto model;
     private String pathToHTMLFile;
     private String pathToHTMLFileForSpringBoot;
 
@@ -48,7 +48,7 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
 
         // Создаем необходимые для html-документа объекты.
         Doctype doctype = new Doctype();
-        Html html = new Html();
+        Html html = new HtmlThymeleaf();
         HtmlEnd htmlEnd = new HtmlEnd();
         Head head = new Head();
         HeadEnd headEnd = new HeadEnd();
@@ -245,16 +245,16 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         // ОБНОВЛЕНИЕ: Открываем .mustache файл и пишем туда html-код для SpringBoot (код одинаковый).
         try {
             BufferedWriter bwHtml = null;
-            BufferedWriter bwHtmlForSpringBoot = null;
+//            BufferedWriter bwHtmlForSpringBoot = null;
 
             try {
                 bwHtml = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathToHTMLFile),
                         "UTF-8"));
                 bwHtml.write(sbHtml.toString());
 
-                bwHtmlForSpringBoot = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream(pathToHTMLFileForSpringBoot), "UTF-8"));
-                bwHtmlForSpringBoot.write(sbHtml.toString());
+//                bwHtmlForSpringBoot = new BufferedWriter(new OutputStreamWriter(
+//                        new FileOutputStream(pathToHTMLFileForSpringBoot), "UTF-8"));
+//                bwHtmlForSpringBoot.write(sbHtml.toString());
 
             } catch (IOException e) {
                 return false;
@@ -262,9 +262,9 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
                 if (bwHtml != null) {
                     bwHtml.close();
                 }
-                if (bwHtmlForSpringBoot != null) {
-                    bwHtmlForSpringBoot.close();
-                }
+//                if (bwHtmlForSpringBoot != null) {
+//                    bwHtmlForSpringBoot.close();
+//                }
             }
 
         } catch (IOException e) {

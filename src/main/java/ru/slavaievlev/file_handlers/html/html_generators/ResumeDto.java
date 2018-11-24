@@ -1,9 +1,12 @@
 package ru.slavaievlev.file_handlers.html.html_generators;
 
+import org.springframework.stereotype.Component;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-public class HTMLModel {
+@Component
+public class ResumeDto {
 
     // ФИО.
     private String fio = null;

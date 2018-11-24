@@ -1,16 +1,14 @@
 package ru.slavaievlev.file_handlers.properties;
 
 import org.springframework.stereotype.Component;
-import ru.slavaievlev.file_handlers.html.html_generators.HTMLModel;
+import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
 import ru.slavaievlev.main;
-
-import java.util.Set;
 
 @Component
 public class PropertyReaderForPropertyTwo extends Thread implements IPropertyReader {
 
     // Модель html-файла.
-    private HTMLModel model;
+    private ResumeDto model;
 
     // Обработчик properties файла.
     private PropertiesHandler propertiesHandler;
