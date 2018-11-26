@@ -8,33 +8,47 @@
 		<p>
 			<b>РЕЗЮМЕ. На должность Java-стажер.</b>
 			<ul><p th:text="' ФИО: ' + ${fio}" /></ul>
-			<ul>Дата рождения: 07.08.1999 г.</ul>
-			<ul>Номер телефона: моб. 8(903)337-19-02</ul>
-			<ul>Email: slavaievlev9@gmail.com</ul>
-			<ul>Skype: slavaievlev9@gmail.com</ul>
-			<ul><b>Цель: </b>
-			<li>Получение работы на должности java-стажер.</li>
-			</ul>
-			<ul><b>Опыт работы: </b>
-			<li></li>
-			</ul>
-			<ul><b>Образование: </b>
-			<li>Ульяновский государственный технический университет. Факультет информационных систем и технологий. Специальность Прикладная информатика. Студент 2 курса.</li>
-			</ul>
-			<ul><b>Дополнительное образование: </b>
-			<li>Сертификат о прохождении курса "Летний интенсив 2018": Разработка приложения "Автоматизация врачебного кабинета</li>
-			<li>Диплом 2 степени за успехи в научно-исследовательской работе и в выставке информационных продуктов НТТС-2018: Сайт на тему "Культура интернета в России и мире"</li>
-			</ul>
-			<ul><b>Навыки: </b>
-			<li>Windows  (144 мес.)</li>
-			<li>Java, C# (desktop)  (10 мес.)</li>
-			<li>git, trello  (4 мес.)</li>
-			<li>HTML, CSS (3 мес.)</li>
-			</ul>
-			<ul><b>Примеры кода: </b>
-			<li><a href="https://github.com/slavaievlev">https://github.com/slavaievlev</a></li>
-			</ul>
-			<ul><image src="https://pp.userapi.com/c630724/v630724797/8a0e/UXOSOg7A5JI.jpg"width="340"></ul>
+            <ul><p th:text="' Дата рождения: ' + ${dob}" /></ul>
+            <ul><p th:text="' Номер телефона: ' + ${phone}" /></ul>
+            <ul><p th:text="' Email: ' + ${email}" /></ul>
+            <ul><p th:text="' Skype: ' + ${skype}" /></ul>
+            <ul>
+                <b>Цель:</b>
+                <tr th:each="target : ${targets}">
+                    <li th:text="${target}"></li>
+                </tr>
+            </ul>
+            <ul>
+                <b>Опыт работы:</b>
+                <tr th:each="experience : ${experiences}">
+                    <li th:text="${experience}"></li>
+                </tr>
+            </ul>
+            <ul>
+                <b>Образование:</b>
+                <tr th:each="education : ${educations}">
+                    <li th:text="${education}"></li>
+                </tr>
+            </ul>
+            <ul>
+                <b>Дополнительное образование:</b>
+                <tr th:each="additional_education : ${additional_educations}">
+                    <li th:text="${additional_education}"></li>
+                </tr>
+            </ul>
+            <ul>
+                <b>Навыки:</b>
+                <tr th:each="skill : ${skills}">
+                    <li th:text="${skill.key} + ' (' + ${skill.value} + ' мес.' + ')'"></li>
+                </tr>
+            </ul>
+            <ul>
+                <b>Примеры кода:</b>
+                <tr th:each="example_code : ${examples_code}">
+                    <li th:text="${example_code}"></li>
+                </tr>
+            </ul>
+			<ul><image th:src="${avatar}" width="340" /></ul>
 		</p>
 	</body>
 </html>

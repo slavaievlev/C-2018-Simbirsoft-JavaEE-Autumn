@@ -26,7 +26,7 @@ public class ResumeController {
         model.addAttribute("email", resumeDto.getEmail());
         model.addAttribute("skype", resumeDto.getSkype());
         model.addAttribute("avatar", resumeDto.getAvatar());
-        model.addAttribute("target", resumeDto.getTarget());
+        model.addAttribute("targets", resumeDto.getTarget());
         model.addAttribute("phone", resumeDto.getPhone());
         model.addAttribute("experiences", resumeDto.getExperiences());
         model.addAttribute("educations", resumeDto.getEducations());
