@@ -12,14 +12,18 @@ public class PropertyService {
     IPropertyReader propertyReaderOne;
     IPropertyReader propertyReaderTwo;
 
+    // html-модель.
+    private ResumeDto resumeDto;
+
     @Autowired
     public PropertyService(@Qualifier ("propertyReaderForPropertyOne") IPropertyReader propertyReaderOne,
                            @Qualifier ("propertyReaderForPropertyTwo") IPropertyReader propertyReaderTwo) {
         this.propertyReaderOne = propertyReaderOne;
         this.propertyReaderTwo = propertyReaderTwo;
+        this.resumeDto = new ResumeDto();
     }
 
-    public void getData() throws InterruptedException{
+    public ResumeDto getData() throws InterruptedException{
 
         // Создаем потоки.
         Thread oneThread = new Thread(propertyReaderOne);
@@ -32,5 +36,7 @@ public class PropertyService {
         // Ждем выполнения обоих потоков.
         oneThread.join();
         twoThread.join();
+
+        return this.resumeDto;
     }
 }

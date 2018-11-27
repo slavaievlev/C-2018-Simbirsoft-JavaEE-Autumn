@@ -21,10 +21,10 @@ public class PropertyReaderForPropertyTwo extends Thread implements IPropertyRea
     private String nameOfPropertyFile;
 
     public PropertyReaderForPropertyTwo() {
-        this.model = main.getMODEL();
         this.propertiesHandler = new PropertiesHandler();
         this.pathToPropertyFiles = main.getPathToPropertyFiles();
         this.nameOfPropertyFile = main.getPropertyFile2();
+        this.model = new ResumeDto();
     }
 
     // Старт потока.

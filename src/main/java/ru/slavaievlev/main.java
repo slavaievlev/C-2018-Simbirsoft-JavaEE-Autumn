@@ -21,9 +21,6 @@ public class main {
     private static final String PATH_TO_HTML_FILE = "resources/index.html";
     private static final String PATH_TO_HTML_FILE_FOR_SPRINGBOOT = "src/main/resources/templates/resume.html";
 
-    // HTML Модель.
-    private static final ResumeDto MODEL = new ResumeDto();
-
     // Геттеры/сеттеры
     public static String getPathToPropertyFiles() {
         return PATH_TO_PROPERTY_FILES;
@@ -43,10 +40,6 @@ public class main {
 
     public static String getPathToHtmlFileForSpringboot() {
         return PATH_TO_HTML_FILE_FOR_SPRINGBOOT;
-    }
-
-    public static ResumeDto getMODEL() {
-        return MODEL;
     }
 
     public static void main(String[] args) throws InterruptedException{

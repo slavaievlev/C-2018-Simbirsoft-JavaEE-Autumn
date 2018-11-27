@@ -28,7 +28,7 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
     @Autowired
     public GeneratorOfHTMLFile(@Qualifier ("propertyService") PropertyService propertyService) {
         this.propertyService = propertyService;
-        this.model = main.getMODEL();
+        this.model = new ResumeDto();
     }
 
     public boolean CreateFileHTML() throws InterruptedException {

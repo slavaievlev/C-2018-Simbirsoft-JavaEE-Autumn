@@ -8,40 +8,40 @@ import java.util.LinkedList;
 public class ResumeDto {
 
     // ФИО.
-    private String fio = null;
+    static private String fio = null;
 
     // Дата рождения.
-    private String dob = null;
+    static private String dob = null;
 
     // Электронная почта.
-    private String email = null;
+    static private String email = null;
 
     // Адрес skype.
-    private String skype = null;
+    static private String skype = null;
 
     // Ссылка на аватар.
-    private String avatar = null;
+    static private String avatar = null;
 
     // Цель резюме.
-    private LinkedList<String> target = null;
+    static private LinkedList<String> target = null;
 
     // Номер телефона.
-    private String phone = null;
+    static private String phone = null;
 
     // Опыт работы.
-    private LinkedList<String> experiences = null;
+    static  private LinkedList<String> experiences = null;
 
     // Образование.
-    private LinkedList<String> educations = null;
+    static private LinkedList<String> educations = null;
 
     // Дополнительное образование.
-    private LinkedList<String> additional_educations = null;
+    static private LinkedList<String> additional_educations = null;
 
     // Навыки.
-    private LinkedHashMap<String, Integer> skills = null;
+    static private LinkedHashMap<String, Integer> skills = null;
 
     // Примеры кода.
-    private LinkedList<String> examples_code = null;
+    static private LinkedList<String> examples_code = null;
 
 
 

@@ -12,7 +12,6 @@ public class ResumeService {
     PropertyService propertyService;
 
     public ResumeDto getResume() throws InterruptedException {
-        propertyService.getData();
-        return main.getMODEL();
+        return propertyService.getData();
     }
 }
