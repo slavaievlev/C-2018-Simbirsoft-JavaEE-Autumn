@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-@Component
 public class ResumeDto {
 
     // ФИО.

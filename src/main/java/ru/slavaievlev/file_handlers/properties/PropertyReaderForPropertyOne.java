@@ -20,8 +20,8 @@ public class PropertyReaderForPropertyOne extends Thread implements IPropertyRea
     // Название property файла.
     private String nameOfPropertyFile;
 
-    public PropertyReaderForPropertyOne(@Qualifier("resumeDto") ResumeDto resumeDto) {
-        this.model = resumeDto;
+    public PropertyReaderForPropertyOne() {
+        this.model = main.getMODEL();
         this.propertiesHandler = new PropertiesHandler();
         this.pathToPropertyFiles = main.getPathToPropertyFiles();
         this.nameOfPropertyFile = main.getPropertyFile1();

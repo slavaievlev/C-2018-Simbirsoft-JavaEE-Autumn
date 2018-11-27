@@ -3,6 +3,7 @@ package ru.slavaievlev.file_handlers.properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
 
 @Component
 public class PropertyService {

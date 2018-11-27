@@ -1,21 +1,18 @@
 package ru.slavaievlev;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
+import ru.slavaievlev.file_handlers.properties.PropertyService;
 
 @Component
 public class ResumeService {
 
-    private ResumeDto resumeDto;
-
     @Autowired
-    public ResumeService(@Qualifier ("resumeDto") ResumeDto resumeDto) {
-        this.resumeDto = resumeDto;
-    }
+    PropertyService propertyService;
 
-    public ResumeDto getResume() {
-        return resumeDto;
+    public ResumeDto getResume() throws InterruptedException {
+        propertyService.getData();
+        return main.getMODEL();
     }
 }

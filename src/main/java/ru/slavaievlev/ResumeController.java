@@ -18,7 +18,7 @@ public class ResumeController {
     }
 
     @RequestMapping(value = "/greeting")
-    public String greeting(Model model) {
+    public String greeting(Model model) throws InterruptedException {
         ResumeDto resumeDto = resumeService.getResume();
 
         model.addAttribute("fio", resumeDto.getFio());
