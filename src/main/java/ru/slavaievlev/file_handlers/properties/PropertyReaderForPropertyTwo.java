@@ -1,9 +1,8 @@
 package ru.slavaievlev.file_handlers.properties;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
-import ru.slavaievlev.main;
 
 @Component
 public class PropertyReaderForPropertyTwo extends Thread implements IPropertyReader {
@@ -15,15 +14,15 @@ public class PropertyReaderForPropertyTwo extends Thread implements IPropertyRea
     private PropertiesHandler propertiesHandler;
 
     // Путь до папки с property файлами.
+    @Value("${PATH_TO_PROPERTY_FILES}")
     private String pathToPropertyFiles;
 
     // Название property файла.
+    @Value("${PROPERTY_FILE2}")
     private String nameOfPropertyFile;
 
     public PropertyReaderForPropertyTwo() {
         this.propertiesHandler = new PropertiesHandler();
-        this.pathToPropertyFiles = main.getPathToPropertyFiles();
-        this.nameOfPropertyFile = main.getPropertyFile2();
         this.model = new ResumeDto();
     }
 

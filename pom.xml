@@ -57,7 +57,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>ru.slavaievlev.main</mainClass>
+                        <mainClass>ru.slavaievlev.Application</mainClass>
                     </manifest>
                 </archive>
             </configuration>

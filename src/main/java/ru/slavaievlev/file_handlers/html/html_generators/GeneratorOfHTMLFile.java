@@ -8,22 +8,23 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.slavaievlev.file_handlers.HandlerOfNullString;
 import ru.slavaievlev.file_handlers.html.html_objects.*;
 import ru.slavaievlev.file_handlers.properties.PropertyService;
-import ru.slavaievlev.main;
 
 // Класс, генерирующий html-файлы.
 @Component
 public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
 
     // Сервис, занимающийся управлением работой обработчиков property файлов.
-    PropertyService propertyService;
+    private PropertyService propertyService;
 
     private ResumeDto model;
+
+    @Value("${PATH_TO_HTML_FILE}")
     private String pathToHTMLFile;
-    private String pathToHTMLFileForSpringBoot;
 
     @Autowired
     public GeneratorOfHTMLFile(@Qualifier ("propertyService") PropertyService propertyService) {
@@ -33,12 +34,7 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
 
     public boolean CreateFileHTML() throws InterruptedException {
 
-
-        pathToHTMLFile = main.getPathToHtmlFile();
-        pathToHTMLFileForSpringBoot = main.getPathToHtmlFileForSpringboot();
-
         propertyService.getData();
-
 
         // Создаем обработчик null строк.
         HandlerOfNullString nullHandler = new HandlerOfNullString();
@@ -47,15 +43,6 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         StringBuilder sbHtml= new StringBuilder();
 
         // Создаем необходимые для html-документа объекты.
-        Doctype doctype = new Doctype();
-        Html html = new HtmlThymeleaf();
-        HtmlEnd htmlEnd = new HtmlEnd();
-        Head head = new Head();
-        HeadEnd headEnd = new HeadEnd();
-        MetaCharset metaCharset = new MetaCharset("utf-8");
-        Title title = new Title("Резюме");
-        Body body = new Body();
-        BodyEnd bodyEnd = new BodyEnd();
         P p = new P();
         B b = new B();
         PEnd pEnd = new PEnd();
@@ -71,13 +58,13 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         LinkedList<HTMLObject> listOfHtmlObjects = new LinkedList<HTMLObject>();
 
         // Вносим данные в список.
-        listOfHtmlObjects.add(doctype);
-        listOfHtmlObjects.add(html);
-        listOfHtmlObjects.add(head);
-        listOfHtmlObjects.add(metaCharset);
-        listOfHtmlObjects.add(title);
-        listOfHtmlObjects.add(headEnd);
-        listOfHtmlObjects.add(body);
+        listOfHtmlObjects.add(new Doctype());
+        listOfHtmlObjects.add(new Html());
+        listOfHtmlObjects.add(new Head());
+        listOfHtmlObjects.add(new MetaCharset("utf-8"));
+        listOfHtmlObjects.add(new Title("Резюме"));
+        listOfHtmlObjects.add(new HeadEnd());
+        listOfHtmlObjects.add(new Body());
         listOfHtmlObjects.add(p);
         listOfHtmlObjects.add(b);
         listOfHtmlObjects.add(new Text("РЕЗЮМЕ. На должность Java-стажер."));
@@ -198,8 +185,8 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(ulEnd);
 
         listOfHtmlObjects.add(pEnd);
-        listOfHtmlObjects.add(bodyEnd);
-        listOfHtmlObjects.add(htmlEnd);
+        listOfHtmlObjects.add(new BodyEnd());
+        listOfHtmlObjects.add(new HtmlEnd());
 
         // Собираем код в строке.
         int numberTabs = 0;                 // Количество отступов в строке перед кодом.
@@ -241,20 +228,13 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
             }
         }
 
-        // Создаем html-файл и вставляем в него html-код.
-        // ОБНОВЛЕНИЕ: Открываем .mustache файл и пишем туда html-код для SpringBoot (код одинаковый).
         try {
             BufferedWriter bwHtml = null;
-//            BufferedWriter bwHtmlForSpringBoot = null;
 
             try {
                 bwHtml = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathToHTMLFile),
                         "UTF-8"));
                 bwHtml.write(sbHtml.toString());
-
-//                bwHtmlForSpringBoot = new BufferedWriter(new OutputStreamWriter(
-//                        new FileOutputStream(pathToHTMLFileForSpringBoot), "UTF-8"));
-//                bwHtmlForSpringBoot.write(sbHtml.toString());
 
             } catch (IOException e) {
                 return false;
@@ -262,9 +242,6 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
                 if (bwHtml != null) {
                     bwHtml.close();
                 }
-//                if (bwHtmlForSpringBoot != null) {
-//                    bwHtmlForSpringBoot.close();
-//                }
             }
 
         } catch (IOException e) {

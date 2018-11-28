@@ -23,7 +23,7 @@ public class StarterReadingProperty {
 
     public void start() {
         // Открывам файл properties в обработчике.
-        if (!propertiesHandler.Open(pathToPropertyFiles + nameOfPropertyFile)) {
+        if (!propertiesHandler.open(pathToPropertyFiles + nameOfPropertyFile)) {
             System.out.println("Не удалось открыть файл properties по адресу '" +
                     pathToPropertyFiles + nameOfPropertyFile + "'");
             return;
@@ -39,62 +39,62 @@ public class StarterReadingProperty {
             switch (sKey) {
 
                 case "FIO": {
-                    model.setFio(propertiesHandler.GetValueInString(sKey));
+                    model.setFio(propertiesHandler.getValueInString(sKey));
                     break;
                 }
 
                 case "DOB": {
-                    model.setDob(propertiesHandler.GetValueInString(sKey));
+                    model.setDob(propertiesHandler.getValueInString(sKey));
                     break;
                 }
 
                 case "email": {
-                    model.setEmail(propertiesHandler.GetValueInString(sKey));
+                    model.setEmail(propertiesHandler.getValueInString(sKey));
                     break;
                 }
 
                 case "skype": {
-                    model.setSkype(propertiesHandler.GetValueInString(sKey));
+                    model.setSkype(propertiesHandler.getValueInString(sKey));
                     break;
                 }
 
                 case "avatar": {
-                    model.setAvatar(propertiesHandler.GetValueInString("avatar"));
+                    model.setAvatar(propertiesHandler.getValueInString("avatar"));
                     break;
                 }
 
                 case "target": {
-                    model.setTarget(propertiesHandler.GetValueInLinkedList("target"));
+                    model.setTarget(propertiesHandler.getValueInLinkedList("target"));
                     break;
                 }
 
                 case "phone": {
-                    model.setPhone(propertiesHandler.GetValueInString("phone"));
+                    model.setPhone(propertiesHandler.getValueInString("phone"));
                     break;
                 }
 
                 case "experiences": {
-                    model.setExperiences(propertiesHandler.GetValueInLinkedList("experiences"));
+                    model.setExperiences(propertiesHandler.getValueInLinkedList("experiences"));
                     break;
                 }
 
                 case "educations": {
-                    model.setEducations(propertiesHandler.GetValueInLinkedList("educations"));
+                    model.setEducations(propertiesHandler.getValueInLinkedList("educations"));
                     break;
                 }
 
                 case "additional_educations": {
-                    model.setAdditional_educations(propertiesHandler.GetValueInLinkedList("additional_educations"));
+                    model.setAdditional_educations(propertiesHandler.getValueInLinkedList("additional_educations"));
                     break;
                 }
 
                 case "skills": {
-                    model.setSkills(propertiesHandler.GetValueInHashMap("skills"));
+                    model.setSkills(propertiesHandler.getValueInHashMap("skills"));
                     break;
                 }
 
                 case "examples_code": {
-                    model.setExamples_code(propertiesHandler.GetValueInLinkedList("examples_code"));
+                    model.setExamples_code(propertiesHandler.getValueInLinkedList("examples_code"));
                     break;
                 }
 
@@ -102,7 +102,7 @@ public class StarterReadingProperty {
         }
 
         // Закрываем файл.
-        if (!propertiesHandler.Close()) {
+        if (!propertiesHandler.close()) {
             System.out.println("Не удалось закрыть файл properties по адресу '" +
                     pathToPropertyFiles + nameOfPropertyFile + "'");
         }

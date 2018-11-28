@@ -3,7 +3,7 @@ package ru.slavaievlev.file_handlers.properties;
 import ru.slavaievlev.file_handlers.IFileHandler;
 
 import java.io.*;
-import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 // Класс, реализующий работу обработчика properties файлов.
@@ -16,7 +16,7 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
     private Properties prop = null;
 
     // Создает пустой properties файл.
-    public boolean CreateEmptyPropertiesFile(String path) {
+    public boolean createEmptyPropertiesFile(String path) {
         StringBuilder sProperties= new StringBuilder();
 
         // Создаем пустой шаблон properties файла.
@@ -39,31 +39,18 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
             }
         }
 
-        // Создаем файл, содержащий код html-страницы.
-        try {
-            BufferedWriter sb = null;
-
-            try {
-                sb = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
-                sb.write(sProperties.toString());
-
-            } catch (IOException e) {
-                return false;
-            } finally {
-                if (sb != null) {
-                    sb.close();
-                }
-            }
+        try (BufferedWriter sb = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8))){
+            sb.write(sProperties.toString());
 
         } catch (IOException e) {
-            return false;
+            System.out.println("Не удалось открыть файл по пути: " + path);
         }
 
         return true;
     }
 
     // Открывает файл properties.
-    synchronized public boolean Open(String path) {
+    synchronized public boolean open(String path) {
 
         if (path == null) {
             return false;
@@ -71,13 +58,13 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
 
         // Если файла не существует по указанному пути, то создаем файл.
         if (!new File(path).exists()) {
-            if (!CreateEmptyPropertiesFile(path)) {
+            if (!createEmptyPropertiesFile(path)) {
                 return false;
             }
         }
 
-        try {
-            fileInputStream = new FileInputStream(path);
+        try (FileInputStream fileInputStream = new FileInputStream(path)) {
+            this.fileInputStream = fileInputStream;
             prop = new Properties();
             prop.load(fileInputStream);
         } catch (IOException e) {
@@ -90,7 +77,7 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
     }
 
     // Закрывает файл properties.
-    synchronized public boolean Close() {
+    synchronized public boolean close() {
         try {
             if (fileInputStream != null) {
                 fileInputStream.close();
@@ -107,7 +94,7 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
     }
 
     // Разбивает пришедшую строку на части, если строка это подразумевает.
-    private String[] Split(String s) {
+    private String[] split(String s) {
         // Разбиваем строку на части.
         String[] sArray = s.split("\", ?\"");
 
@@ -126,74 +113,58 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
 
     // Получить набор ключей properties файла.
     public Set getKeys() {
-        Set result = prop.keySet();
-        return result;
+        return prop.keySet();
     }
 
     // Получает значения по указанному ключу из файла properties.
-    public String GetValueInString(String key) {
+    public String getValueInString(String key) {
         if (fileInputStream == null) {
             return null;
         }
 
-        String result = null;
-        try {
-            // Ищем значение по ключу в файле properties.
-            String notDecodedResult = prop.getProperty(key);
+        // Ищем значение по ключу в файле properties.
+        String notDecodedResult = prop.getProperty(key);
 
-            // Если ключ не был найден и getProperty возвращает null, то выходим.
-            if (notDecodedResult == null) {
-                return null;
-            }
-
-            // Перекодируем и запишем найденное значение в строку.
-            byte[] bytesArray = notDecodedResult.getBytes("ISO-8859-1");
-            result = new String(bytesArray);
-
-        } catch (UnsupportedEncodingException e) {
+        // Если ключ не был найден и getProperty возвращает null, то выходим.
+        if (notDecodedResult == null) {
             return null;
         }
 
-        return result;
+        // Перекодируем и запишем найденное значение в строку.
+        byte[] bytesArray = notDecodedResult.getBytes(StandardCharsets.ISO_8859_1);
+        return new String(bytesArray);
     }
 
     // Получает значения по указанному ключу из файла properties.
-    public LinkedList<String> GetValueInLinkedList(String key) {
+    public LinkedList<String> getValueInLinkedList(String key) {
         if (fileInputStream == null) {
             return null;
         }
 
         String preResult = null;
-        LinkedList<String> result = new LinkedList<String>();
-        try {
-            // Ищем значение по ключу в файле properties.
-            String notDecodedResult = prop.getProperty(key);
 
-            // Если ключ не был найден и getProperty возвращает null, то выходим.
-            if (notDecodedResult == null) {
-                return null;
-            }
+        // Ищем значение по ключу в файле properties.
+        String notDecodedResult = prop.getProperty(key);
 
-            // Перекодируем и запишем найденное значение в строку.
-            byte[] bytesArray = notDecodedResult.getBytes("ISO-8859-1");
-            preResult = new String(bytesArray);
-
-            // Разбиваем строку на части, если значение состоит из нескольких частей.
-            String[] sArray = Split(preResult);
-
-            // Записываем полученные строки в список.
-            result.addAll(Arrays.asList(sArray));
-
-        } catch (UnsupportedEncodingException e) {
+        // Если ключ не был найден и getProperty возвращает null, то выходим.
+        if (notDecodedResult == null) {
             return null;
         }
 
-        return result;
+        // Перекодируем и запишем найденное значение в строку.
+        byte[] bytesArray = notDecodedResult.getBytes(StandardCharsets.ISO_8859_1);
+        preResult = new String(bytesArray);
+
+        // Разбиваем строку на части, если значение состоит из нескольких частей.
+        String[] sArray = split(preResult);
+
+        // Записываем полученные строки в список.
+        return new LinkedList<String>(Arrays.asList(sArray));
     }
 
     // Синхронно сортирует два входящих массива по значениям массива values и записывает в hashMap, который учитывает порядок
     // добавления элементов.
-    private LinkedHashMap<String, Integer> SortToHashMap(String[] keys, int[] values, LinkedHashMap<String, Integer> linkedHashMap) {
+    private void sortToHashMap(String[] keys, int[] values, LinkedHashMap<String, Integer> linkedHashMap) {
 
         // Сортируем по значениям.
         for (int i = 0; i < keys.length - 1; i++) {
@@ -213,12 +184,10 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
         for (int i = 0; i < keys.length; i++) {
             linkedHashMap.put(keys[i], values[i]);
         }
-
-        return linkedHashMap;
     }
 
     // Делим полученные строки на ключи и значения (должны быть записаны в формате - ключ : "значение", ...)
-    private LinkedHashMap<String, Integer> AddKeyAndValue(String[] sArray, LinkedHashMap<String, Integer> linkedHashMap) {
+    private void addKeyAndValue(String[] sArray, LinkedHashMap<String, Integer> linkedHashMap) {
 
         // Создаем два массива в целях реализации сортировки по значениям.
         String[] keys = new String[sArray.length];
@@ -246,41 +215,34 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
         }
 
         // Сортируем синхронно оба массива по значениям из второго массива (values).
-        linkedHashMap = SortToHashMap(keys, values, linkedHashMap);
-
-        return linkedHashMap;
+        sortToHashMap(keys, values, linkedHashMap);
     }
 
     // Получает значения по указанному ключу из файла properties.
-    public LinkedHashMap<String, Integer> GetValueInHashMap(String key) {
+    public LinkedHashMap<String, Integer> getValueInHashMap(String key) {
         if (fileInputStream == null) {
             return null;
         }
 
-        String preResult = null;
         LinkedHashMap<String, Integer> result = new LinkedHashMap<String, Integer>();
-        try {
-            // Ищем значение по ключу в файле properties.
-            String notDecodedResult = prop.getProperty(key);
 
-            // Если ключ не был найден и getProperty возвращает null, то выходим.
-            if (notDecodedResult == null) {
-                return null;
-            }
+        // Ищем значение по ключу в файле properties.
+        String notDecodedResult = prop.getProperty(key);
 
-            // Перекодируем и запишем найденное значение в строку.
-            byte[] bytesArray = notDecodedResult.getBytes("ISO-8859-1");
-            preResult = new String(bytesArray);
-
-            // Разбиваем строку на части, если значение состоит из нескольких частей.
-            String[] sArray = Split(preResult);
-
-            // Записываем полученные строки в LinkedHashMap.
-            result = AddKeyAndValue(sArray, result);
-
-        } catch (UnsupportedEncodingException e) {
+        // Если ключ не был найден и getProperty возвращает null, то выходим.
+        if (notDecodedResult == null) {
             return null;
         }
+
+        // Перекодируем и запишем найденное значение в строку.
+        byte[] bytesArray = notDecodedResult.getBytes(StandardCharsets.ISO_8859_1);
+        String preResult = new String(bytesArray);
+
+        // Разбиваем строку на части, если значение состоит из нескольких частей.
+        String[] sArray = split(preResult);
+
+        // Записываем полученные строки в LinkedHashMap.
+        addKeyAndValue(sArray, result);
 
         return result;
     }
