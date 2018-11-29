@@ -1,42 +1,126 @@
 package ru.slavaievlev.file_handlers.properties;
 
-import ru.slavaievlev.file_handlers.IFileHandler;
+import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 // Класс, реализующий работу обработчика properties файлов.
-public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
+public class PropertiesHandler implements IPropertiesHandler {
 
-    // Создаем модель properties файла.
-    private PropertiesModel propertiesModel = new PropertiesModel();
+    private String path;
+    private ResumeDto model;
 
-    private FileInputStream fileInputStream = null;
-    private Properties prop = null;
+    public PropertiesHandler(String path, ResumeDto model) {
+        this.path = path;
+        this.model = model;
+    }
+
+    // Получает набор данных из property файла.
+    public boolean getData() {
+
+        if (!new File(path).exists()) {
+            if (!createEmptyPropertiesFile(path)) {
+                return false;
+            }
+        }
+
+        try (FileInputStream propertyStream = new FileInputStream(path)) {
+
+            Properties property = new Properties();
+            property.load(propertyStream);
+
+            FillModel(property);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Property файл по адресу " + path + "не существует или заблокирован");
+            return false;
+        } catch (IOException e) {
+            System.out.println("Не удалось открыть property файл по адресу " + path);
+            return false;
+        }
+
+        return true;
+    }
+
+    // Заполняет модель.
+    private void FillModel(Properties property) {
+
+        for(Object key : property.keySet()) {
+
+            switch ((String)key) {
+
+                case "FIO": {
+                    model.setFio(getValueInString(property, (String)key));
+                    break;
+                }
+
+                case "DOB": {
+                    model.setDob(getValueInString(property, (String)key));
+                    break;
+                }
+
+                case "email": {
+                    model.setEmail(getValueInString(property, (String)key));
+                    break;
+                }
+
+                case "skype": {
+                    model.setSkype(getValueInString(property, (String)key));
+                    break;
+                }
+
+                case "avatar": {
+                    model.setAvatar(getValueInString(property, (String)key));
+                    break;
+                }
+
+                case "target": {
+                    model.setTarget(getValueInLinkedList(property, (String)key));
+                    break;
+                }
+
+                case "phone": {
+                    model.setPhone(getValueInString(property, (String)key));
+                    break;
+                }
+
+                case "experiences": {
+                    model.setExperiences(getValueInLinkedList(property, (String)key));
+                    break;
+                }
+
+                case "educations": {
+                    model.setEducations(getValueInLinkedList(property, (String)key));
+                    break;
+                }
+
+                case "additional_educations": {
+                    model.setAdditional_educations(getValueInLinkedList(property, (String)key));
+                    break;
+                }
+
+                case "skills": {
+                    model.setSkills(getValueInHashMap(property, (String)key));
+                    break;
+                }
+
+                case "examples_code": {
+                    model.setExamples_code(getValueInLinkedList(property, (String)key));
+                    break;
+                }
+
+            }
+        }
+    }
 
     // Создает пустой properties файл.
     public boolean createEmptyPropertiesFile(String path) {
+
         StringBuilder sProperties= new StringBuilder();
-
-        // Создаем пустой шаблон properties файла.
-        for(String s : propertiesModel.getFieldsList()) {
+        for(String s : new PropertiesModel().getFieldsList()) {
             sProperties.append(s);
-        }
-
-        // Создаем папку для хранения файла properties.
-        String[] folders = path.split("/");
-        for (int i = 0; i < folders.length - 1; i++) {
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < i; j++) {
-                sb.append(folders[j] + "/");
-            }
-            sb.append(folders[i]);
-
-            File folder = new File(sb.toString());
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
         }
 
         try (BufferedWriter sb = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8))){
@@ -44,58 +128,40 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
 
         } catch (IOException e) {
             System.out.println("Не удалось открыть файл по пути: " + path);
-        }
-
-        return true;
-    }
-
-    // Открывает файл properties.
-    synchronized public boolean open(String path) {
-
-        if (path == null) {
-            return false;
-        }
-
-        // Если файла не существует по указанному пути, то создаем файл.
-        if (!new File(path).exists()) {
-            if (!createEmptyPropertiesFile(path)) {
-                return false;
-            }
-        }
-
-        try (FileInputStream fileInputStream = new FileInputStream(path)) {
-            this.fileInputStream = fileInputStream;
-            prop = new Properties();
-            prop.load(fileInputStream);
-        } catch (IOException e) {
-            fileInputStream = null;
-            prop = null;
             return false;
         }
 
         return true;
     }
 
-    // Закрывает файл properties.
-    synchronized public boolean close() {
-        try {
-            if (fileInputStream != null) {
-                fileInputStream.close();
-            }
-        } catch (IOException e) {
-            fileInputStream = null;
-            prop = null;
-            return false;
-        }
+    // Общий метод для получения строки из property.
+    private String getValue(Properties property, String key) {
 
-        fileInputStream = null;
-        prop = null;
-        return true;
+        String notDecodedResult = property.getProperty(key);
+        if (notDecodedResult == null) {
+            return null;
+        }
+        return new String(notDecodedResult.getBytes(StandardCharsets.ISO_8859_1));
+
     }
 
-    // Разбивает пришедшую строку на части, если строка это подразумевает.
+    private String getValueInString(Properties property, String key) {
+        return getValue(property, key);
+    }
+
+    private LinkedList<String> getValueInLinkedList(Properties property, String key) {
+
+        String preResult = getValue(property, key);
+        if (preResult == null) {
+            return null;
+        }
+
+        return new LinkedList<>(Arrays.asList(split(preResult)));
+    }
+
+    // Разбивает пришедшую строку на части.
     private String[] split(String s) {
-        // Разбиваем строку на части.
+
         String[] sArray = s.split("\", ?\"");
 
         if (sArray.length > 1) {
@@ -111,60 +177,9 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
         return sArray;
     }
 
-    // Получить набор ключей properties файла.
-    public Set getKeys() {
-        return prop.keySet();
-    }
-
-    // Получает значения по указанному ключу из файла properties.
-    public String getValueInString(String key) {
-        if (fileInputStream == null) {
-            return null;
-        }
-
-        // Ищем значение по ключу в файле properties.
-        String notDecodedResult = prop.getProperty(key);
-
-        // Если ключ не был найден и getProperty возвращает null, то выходим.
-        if (notDecodedResult == null) {
-            return null;
-        }
-
-        // Перекодируем и запишем найденное значение в строку.
-        byte[] bytesArray = notDecodedResult.getBytes(StandardCharsets.ISO_8859_1);
-        return new String(bytesArray);
-    }
-
-    // Получает значения по указанному ключу из файла properties.
-    public LinkedList<String> getValueInLinkedList(String key) {
-        if (fileInputStream == null) {
-            return null;
-        }
-
-        String preResult = null;
-
-        // Ищем значение по ключу в файле properties.
-        String notDecodedResult = prop.getProperty(key);
-
-        // Если ключ не был найден и getProperty возвращает null, то выходим.
-        if (notDecodedResult == null) {
-            return null;
-        }
-
-        // Перекодируем и запишем найденное значение в строку.
-        byte[] bytesArray = notDecodedResult.getBytes(StandardCharsets.ISO_8859_1);
-        preResult = new String(bytesArray);
-
-        // Разбиваем строку на части, если значение состоит из нескольких частей.
-        String[] sArray = split(preResult);
-
-        // Записываем полученные строки в список.
-        return new LinkedList<String>(Arrays.asList(sArray));
-    }
-
     // Синхронно сортирует два входящих массива по значениям массива values и записывает в hashMap, который учитывает порядок
     // добавления элементов.
-    private void sortToHashMap(String[] keys, int[] values, LinkedHashMap<String, Integer> linkedHashMap) {
+    private LinkedHashMap<String, Integer> sortToHashMap(String[] keys, int[] values) {
 
         // Сортируем по значениям.
         for (int i = 0; i < keys.length - 1; i++) {
@@ -181,13 +196,15 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
             }
         }
 
+        LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
         for (int i = 0; i < keys.length; i++) {
-            linkedHashMap.put(keys[i], values[i]);
+            result.put(keys[i], values[i]);
         }
+        return result;
     }
 
     // Делим полученные строки на ключи и значения (должны быть записаны в формате - ключ : "значение", ...)
-    private void addKeyAndValue(String[] sArray, LinkedHashMap<String, Integer> linkedHashMap) {
+    private LinkedHashMap<String, Integer> addKeyAndValue(String[] sArray) {
 
         // Создаем два массива в целях реализации сортировки по значениям.
         String[] keys = new String[sArray.length];
@@ -215,35 +232,18 @@ public class PropertiesHandler implements IFileHandler, IPropertiesHandler {
         }
 
         // Сортируем синхронно оба массива по значениям из второго массива (values).
-        sortToHashMap(keys, values, linkedHashMap);
+        return sortToHashMap(keys, values);
     }
 
-    // Получает значения по указанному ключу из файла properties.
-    public LinkedHashMap<String, Integer> getValueInHashMap(String key) {
-        if (fileInputStream == null) {
+    private LinkedHashMap<String, Integer> getValueInHashMap(Properties property, String key) {
+
+        String preResult = getValue(property, key);
+        if (preResult == null) {
             return null;
         }
 
-        LinkedHashMap<String, Integer> result = new LinkedHashMap<String, Integer>();
-
-        // Ищем значение по ключу в файле properties.
-        String notDecodedResult = prop.getProperty(key);
-
-        // Если ключ не был найден и getProperty возвращает null, то выходим.
-        if (notDecodedResult == null) {
-            return null;
-        }
-
-        // Перекодируем и запишем найденное значение в строку.
-        byte[] bytesArray = notDecodedResult.getBytes(StandardCharsets.ISO_8859_1);
-        String preResult = new String(bytesArray);
-
-        // Разбиваем строку на части, если значение состоит из нескольких частей.
         String[] sArray = split(preResult);
 
-        // Записываем полученные строки в LinkedHashMap.
-        addKeyAndValue(sArray, result);
-
-        return result;
+        return addKeyAndValue(sArray);
     }
 }
