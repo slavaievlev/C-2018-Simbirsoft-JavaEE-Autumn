@@ -2,7 +2,7 @@ package ru.slavaievlev.file_handlers.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
+import ru.slavaievlev.file_handlers.html.html_dto.ResumeDto;
 
 @Component
 public class PropertyReaderForPropertyOne extends Thread implements IPropertyReader{

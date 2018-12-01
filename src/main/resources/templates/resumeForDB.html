@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Резюме</title>
+</head>
+<body>
+<p>
+    <b>РЕЗЮМЕ. На должность Java-стажер.</b>
+    <ul><p th:text="' ФИО: ' + ${fio}" /></ul>
+<ul><p th:text="' Дата рождения: ' + ${dob}" /></ul>
+<ul><p th:text="' Номер телефона: ' + ${phone}" /></ul>
+<ul><p th:text="' Email: ' + ${email}" /></ul>
+<ul><p th:text="' Skype: ' + ${skype}" /></ul>
+<ul>
+    <b>Цель:</b>
+    <tr th:each="target : ${targets}">
+        <li th:text="${target.getTarget()}"></li>
+    </tr>
+</ul>
+<ul>
+    <b>Опыт работы:</b>
+    <tr th:each="experience : ${experiences}">
+        <li th:text="${experience.getExperience()}"></li>
+    </tr>
+</ul>
+<ul>
+    <b>Образование:</b>
+    <tr th:each="education : ${educations}">
+        <li th:text="${education.getEducation()}"></li>
+    </tr>
+</ul>
+<ul>
+    <b>Дополнительное образование:</b>
+    <tr th:each="additionalEducation : ${additionalEducations}">
+        <li th:text="${additionalEducation.getAdditioneducations()}"></li>
+    </tr>
+</ul>
+<ul>
+    <b>Навыки:</b>
+    <tr th:each="skill : ${skills}">
+        <li th:text="${skill.getSkill()} + ' (' + ${skill.getExperience()} + ' мес.' + ')'"></li>
+    </tr>
+</ul>
+<ul>
+    <b>Примеры кода:</b>
+    <tr th:each="exampleCode : ${examplesCode}">
+        <a th:href="${exampleCode.getLink()}" th:text="${exampleCode.getNameresource()}"></a>
+    </tr>
+</ul>
+<ul><image th:src="${avatar}" width="340" /></ul>
+</p>
+</body>
+</html>

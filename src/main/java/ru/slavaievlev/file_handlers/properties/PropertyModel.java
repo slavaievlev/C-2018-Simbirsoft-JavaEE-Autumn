@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 // Модель properties-файла.
-public class PropertiesModel {
+public class PropertyModel {
 
     private static final String FIO = "FIO=\n";
     private static final String DOB = "DOB=\n";

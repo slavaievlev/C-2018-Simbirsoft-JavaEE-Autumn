@@ -1,4 +1,4 @@
-package ru.slavaievlev.file_handlers.html.html_generators;
+package ru.slavaievlev.file_handlers.html.html_dto;
 
 import org.springframework.stereotype.Component;
 

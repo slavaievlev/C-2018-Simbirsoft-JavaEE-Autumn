@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.slavaievlev.file_handlers.HandlerOfNullString;
+import ru.slavaievlev.file_handlers.html.html_dto.ResumeDto;
 import ru.slavaievlev.file_handlers.html.html_objects.*;
-import ru.slavaievlev.file_handlers.properties.PropertyService;
+import ru.slavaievlev.services.PropertyService;
 
 // Класс, генерирующий html-файлы.
 @Component

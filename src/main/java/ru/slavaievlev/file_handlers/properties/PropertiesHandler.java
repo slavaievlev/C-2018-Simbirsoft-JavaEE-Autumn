@@ -1,10 +1,11 @@
 package ru.slavaievlev.file_handlers.properties;
 
-import ru.slavaievlev.file_handlers.html.html_generators.ResumeDto;
+import ru.slavaievlev.file_handlers.html.html_dto.ResumeDto;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 // Класс, реализующий работу обработчика properties файлов.
 public class PropertiesHandler implements IPropertiesHandler {
@@ -119,7 +120,7 @@ public class PropertiesHandler implements IPropertiesHandler {
     public boolean createEmptyPropertiesFile(String path) {
 
         StringBuilder sProperties= new StringBuilder();
-        for(String s : new PropertiesModel().getFieldsList()) {
+        for(String s : new PropertyModel().getFieldsList()) {
             sProperties.append(s);
         }
 
