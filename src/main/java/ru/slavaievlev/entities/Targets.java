@@ -3,15 +3,26 @@ package ru.slavaievlev.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "TARGETS")
 public class Targets {
     @Id
     @GeneratedValue
     private int id;
-    private int summaryid;
     private String target;
 
-    public int getSummaryid() {
-        return summaryid;
+    public Targets() {
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "summary_id", nullable = false)
+    private Summary summary;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 
     public String getTarget() {

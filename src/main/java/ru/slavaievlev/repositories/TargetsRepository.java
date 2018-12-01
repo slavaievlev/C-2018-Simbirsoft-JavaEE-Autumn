@@ -6,5 +6,4 @@ import ru.slavaievlev.entities.Targets;
 import java.util.List;
 
 public interface TargetsRepository extends JpaRepository<Targets, Integer> {
-    List<Targets> findBySummaryid(int summaryid);
 }

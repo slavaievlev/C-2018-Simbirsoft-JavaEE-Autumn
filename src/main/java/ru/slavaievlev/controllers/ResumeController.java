@@ -10,7 +10,10 @@ import ru.slavaievlev.entities.*;
 import ru.slavaievlev.services.ResumeService;
 import ru.slavaievlev.file_handlers.html.html_dto.ResumeDto;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ResumeController {
@@ -45,12 +48,20 @@ public class ResumeController {
     @RequestMapping(value = "/greeting/db")
     public String getAll(@RequestParam(value="id") int id, Model model) {
         Summary summary = resumeService.getSummary(id);
-        List<Targets> targets = resumeService.getTargets(id);
-        List<Experiences> experiences = resumeService.getExperiences(id);
-        List<Educations> educations = resumeService.getEducations(id);
-        List<Additioneducations> additionEducations = resumeService.getAdditionEducations(id);
-        List<Skills> skills = resumeService.getSkills(id);
-        List<Examplescode> examplescodes = resumeService.getExamplesCode(id);
+        List<Targets> targets = summary.getTargets();
+        List<Experiences> experiences = summary.getExperiences();
+        List<Educations> educations = summary.getEducations();
+        List<Additioneducations> additionEducations = summary.getAdditionEducations();
+        List<Skills> skills = summary.getSkills();
+        List<Examplescode> examplesCodes = summary.getExamplesCodes();
+
+        Collections.sort(skills, new Comparator<Skills>() {
+            public int compare(Skills o1, Skills o2) {
+                int exp1 = o1.getExperience();
+                int exp2 = o2.getExperience();
+                return Integer.compare(exp2, exp1);
+            }
+        });
 
         model.addAttribute("fio", summary.getFio());
         model.addAttribute("dob", summary.getDob());
@@ -63,7 +74,7 @@ public class ResumeController {
         model.addAttribute("educations", educations);
         model.addAttribute("additionalEducations", additionEducations);
         model.addAttribute("skills", skills);
-        model.addAttribute("examplesCode", examplescodes);
+        model.addAttribute("examplesCode", examplesCodes);
 
         return "resumeForDB";
     }

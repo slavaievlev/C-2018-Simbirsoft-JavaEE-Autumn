@@ -6,5 +6,4 @@ import ru.slavaievlev.entities.Educations;
 import java.util.List;
 
 public interface EducationsRepository extends JpaRepository<Educations, Integer> {
-    List<Educations> findBySummaryid(int summaryid);
 }

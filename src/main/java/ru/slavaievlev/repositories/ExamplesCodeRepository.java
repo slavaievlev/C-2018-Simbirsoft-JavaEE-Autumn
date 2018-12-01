@@ -6,5 +6,4 @@ import ru.slavaievlev.entities.Examplescode;
 import java.util.List;
 
 public interface ExamplesCodeRepository extends JpaRepository<Examplescode, Integer> {
-    List<Examplescode> findBySummaryid(int summaryid);
 }

@@ -6,5 +6,4 @@ import ru.slavaievlev.entities.Experiences;
 import java.util.List;
 
 public interface ExperiencesRepository extends JpaRepository<Experiences, Integer> {
-    List<Experiences> findBySummaryid(int summaryid);
 }

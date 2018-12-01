@@ -153,12 +153,12 @@ public class GeneratorOfHTMLFile implements IGeneratorOfHTMLFile {
         listOfHtmlObjects.add(new Text("Навыки: "));
         listOfHtmlObjects.add(bEnd);
         if (model.getSkills() != null) {
-            LinkedHashMap<String, Integer> hashMap = model.getSkills();
+            LinkedHashMap<String, String> hashMap = model.getSkills();
             Set<String> keys = hashMap.keySet();
             for(String s : keys) {
                 listOfHtmlObjects.add(li);
-                int value;
-                if ((value = hashMap.get(s)) != 0) {
+                String value;
+                if ((value = hashMap.get(s)) != null) {
                     listOfHtmlObjects.add(new Text(s + " (" + value + " мес.)"));
                 } else {
                     listOfHtmlObjects.add(new Text(s));

@@ -38,7 +38,7 @@ public class ResumeDto {
     static private LinkedList<String> additional_educations = null;
 
     // Навыки.
-    static private LinkedHashMap<String, Integer> skills = null;
+    static private LinkedHashMap<String, String> skills = null;
 
     // Примеры кода.
     static private LinkedList<String> examples_code = null;
@@ -125,11 +125,11 @@ public class ResumeDto {
         this.additional_educations = additional_educations;
     }
 
-    public LinkedHashMap<String, Integer> getSkills() {
+    public LinkedHashMap<String, String> getSkills() {
         return skills;
     }
 
-    public void setSkills(LinkedHashMap<String, Integer> skills) {
+    public void setSkills(LinkedHashMap<String, String> skills) {
         this.skills = skills;
     }
 

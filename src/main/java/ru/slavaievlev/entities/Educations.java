@@ -1,24 +1,30 @@
 package ru.slavaievlev.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "EDUCATIONS")
 public class Educations {
 
     @Id
     @GeneratedValue
     private int id;
-    private int summaryid;
     private String education;
+
+    @ManyToOne
+    @JoinColumn(name = "summary_id", nullable = false)
+    private Summary summary;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
 
     public int getId() {
         return id;
-    }
-
-    public int getSummaryid() {
-        return summaryid;
     }
 
     public String getEducation() {

@@ -5,7 +5,6 @@ import ru.slavaievlev.file_handlers.html.html_dto.ResumeDto;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 // Класс, реализующий работу обработчика properties файлов.
 public class PropertiesHandler implements IPropertiesHandler {
@@ -178,65 +177,50 @@ public class PropertiesHandler implements IPropertiesHandler {
         return sArray;
     }
 
-    // Синхронно сортирует два входящих массива по значениям массива values и записывает в hashMap, который учитывает порядок
-    // добавления элементов.
-    private LinkedHashMap<String, Integer> sortToHashMap(String[] keys, int[] values) {
-
-        // Сортируем по значениям.
-        for (int i = 0; i < keys.length - 1; i++) {
-            if (values[i + 1] > values[i]) {
-                int intX = values[i];
-                String sX = keys[i];
-
-                values[i] = values[i + 1];
-                keys[i] = keys[i + 1];
-
-                values[i + 1] = intX;
-                keys[i + 1] = sX;
-                i -= 2;
-            }
-        }
-
-        LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
-        for (int i = 0; i < keys.length; i++) {
-            result.put(keys[i], values[i]);
-        }
-        return result;
-    }
-
     // Делим полученные строки на ключи и значения (должны быть записаны в формате - ключ : "значение", ...)
-    private LinkedHashMap<String, Integer> addKeyAndValue(String[] sArray) {
+    private LinkedHashMap<String, String> addKeyAndValue(String[] sArray) {
 
-        // Создаем два массива в целях реализации сортировки по значениям.
-        String[] keys = new String[sArray.length];
-        int[] values = new int[sArray.length];
+        String[][] keysValues = new String[sArray.length][2];
 
-        // Идем по всем значениям одного ключа из property.
-        for (int i = 0; i < sArray.length; i++) {
-            // Пытаемся Разбить текущую строку на ключ и значение.
-            String[] sKeyAndValue = sArray[i].split(": \"");
+        int index = 0;
+        for (String s : sArray) {
+            // Разбиваем строку на ключ-значение.
+            String[] sKeyAndValue = s.split(": \"");
 
-            // Если получилось разбить строку, то удаляем с правого конца знак " и
-            // записываем ключ и значение в два массива для последующей синхронной сортировки.
             if (sKeyAndValue.length > 1) {
                 // Удаляем оставшиеся справа знаки.
                 sKeyAndValue[1] = sKeyAndValue[1].replaceAll("[\".*]$", "");
 
-                // Записываем найденные значения.
-                keys[i] = sKeyAndValue[0];
-                values[i] = Integer.parseInt(sKeyAndValue[1]);
+                keysValues[index][0] = sKeyAndValue[0];
+                keysValues[index][1] = sKeyAndValue[1];
             } else {
-                // Записываем значение = 0, если строку разделить не удалось.
-                keys[i] = sKeyAndValue[0];
-                values[i] = 0;
+                keysValues[index][0] = sKeyAndValue[0];
+                keysValues[index][1] = null;
             }
+            index++;
         }
 
-        // Сортируем синхронно оба массива по значениям из второго массива (values).
-        return sortToHashMap(keys, values);
+        Arrays.sort(keysValues, new Comparator<String[]>() {
+            @Override
+            public int compare(String[] o1, String[] o2) {
+                int x1 = Integer.parseInt(o1[1]);
+                int x2;
+                if (o2[1] == null) {
+                    return 1;
+                }
+                x2 = Integer.parseInt(o2[1]);
+                return Integer.compare(x2, x1);
+            }
+        });
+
+        LinkedHashMap<String, String> result = new LinkedHashMap<>();
+        for (String[] keyValue : keysValues) {
+            result.put(keyValue[0], keyValue[1]);
+        }
+        return result;
     }
 
-    private LinkedHashMap<String, Integer> getValueInHashMap(Properties property, String key) {
+    private LinkedHashMap<String, String> getValueInHashMap(Properties property, String key) {
 
         String preResult = getValue(property, key);
         if (preResult == null) {
