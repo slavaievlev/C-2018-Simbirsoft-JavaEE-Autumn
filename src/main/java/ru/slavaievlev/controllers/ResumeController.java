@@ -13,7 +13,6 @@ import ru.slavaievlev.file_handlers.html.html_dto.ResumeDto;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class ResumeController {
@@ -47,34 +46,29 @@ public class ResumeController {
 
     @RequestMapping(value = "/greeting/db")
     public String getAll(@RequestParam(value="id") int id, Model model) {
-        Summary summary = resumeService.getSummary(id);
-        List<Targets> targets = summary.getTargets();
-        List<Experiences> experiences = summary.getExperiences();
-        List<Educations> educations = summary.getEducations();
-        List<Additioneducations> additionEducations = summary.getAdditionEducations();
-        List<Skills> skills = summary.getSkills();
-        List<Examplescode> examplesCodes = summary.getExamplesCodes();
+//        Summary summary = resumeService.getSummary(id);
+//
+//        List<Skills> skills = summary.getSkills();
+//        Collections.sort(skills, new Comparator<Skills>() {
+//            public int compare(Skills o1, Skills o2) {
+//                int exp1 = o1.getExperience();
+//                int exp2 = o2.getExperience();
+//                return Integer.compare(exp2, exp1);
+//            }
+//        });
 
-        Collections.sort(skills, new Comparator<Skills>() {
-            public int compare(Skills o1, Skills o2) {
-                int exp1 = o1.getExperience();
-                int exp2 = o2.getExperience();
-                return Integer.compare(exp2, exp1);
-            }
-        });
-
-        model.addAttribute("fio", summary.getFio());
-        model.addAttribute("dob", summary.getDob());
-        model.addAttribute("email", summary.getEmail());
-        model.addAttribute("skype", summary.getSkype());
-        model.addAttribute("avatar", summary.getAvatar());
-        model.addAttribute("phone", summary.getPhone());
-        model.addAttribute("targets", targets);
-        model.addAttribute("experiences", experiences);
-        model.addAttribute("educations", educations);
-        model.addAttribute("additionalEducations", additionEducations);
-        model.addAttribute("skills", skills);
-        model.addAttribute("examplesCode", examplesCodes);
+//        model.addAttribute("fio", summary.getFio());
+//        model.addAttribute("dob", summary.getDob());
+//        model.addAttribute("email", summary.getEmail());
+//        model.addAttribute("skype", summary.getSkype());
+//        model.addAttribute("avatar", summary.getAvatar());
+//        model.addAttribute("phone", summary.getPhone());
+//        model.addAttribute("targets", summary.getTargets());
+//        model.addAttribute("experiences", summary.getExperiences());
+//        model.addAttribute("educations", summary.getEducations());
+//        model.addAttribute("additionalEducations", summary.getAdditionEducations());
+//        model.addAttribute("skills", skills);
+//        model.addAttribute("examplesCode", summary.getExamplesCodes());
 
         return "resumeForDB";
     }

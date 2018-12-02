@@ -39,6 +39,30 @@ public class Summary {
     @OneToMany(mappedBy = "summary")
     private List<Skills> skills;
 
+    public void setTargets(List<Targets> targets) {
+        this.targets = targets;
+    }
+
+    public void setAdditionEducations(List<Additioneducations> additioneducations) {
+        this.additioneducations = additioneducations;
+    }
+
+    public void setEducations(List<Educations> educations) {
+        this.educations = educations;
+    }
+
+    public void setExamplesCodes(List<Examplescode> examplescodes) {
+        this.examplescodes = examplescodes;
+    }
+
+    public void setExperiences(List<Experiences> experiences) {
+        this.experiences = experiences;
+    }
+
+    public void setSkills(List<Skills> skills) {
+        this.skills = skills;
+    }
+
     public List<Targets> getTargets() {
         return targets;
     }
