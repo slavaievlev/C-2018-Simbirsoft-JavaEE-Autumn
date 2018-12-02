@@ -48,13 +48,8 @@ public class ResumeController {
     @RequestMapping(value = "/greeting/db")
     public String getAll(@RequestParam(value="id") int id, Model model) {
         Summary summary = resumeService.getSummary(id);
-        List<Targets> targets = summary.getTargets();
-        List<Experiences> experiences = summary.getExperiences();
-        List<Educations> educations = summary.getEducations();
-        List<Additioneducations> additionEducations = summary.getAdditionEducations();
-        List<Skills> skills = summary.getSkills();
-        List<Examplescode> examplesCodes = summary.getExamplesCodes();
 
+        List<Skills> skills = summary.getSkills();
         Collections.sort(skills, new Comparator<Skills>() {
             public int compare(Skills o1, Skills o2) {
                 int exp1 = o1.getExperience();
@@ -69,12 +64,12 @@ public class ResumeController {
         model.addAttribute("skype", summary.getSkype());
         model.addAttribute("avatar", summary.getAvatar());
         model.addAttribute("phone", summary.getPhone());
-        model.addAttribute("targets", targets);
-        model.addAttribute("experiences", experiences);
-        model.addAttribute("educations", educations);
-        model.addAttribute("additionalEducations", additionEducations);
+        model.addAttribute("targets", summary.getTargets());
+        model.addAttribute("experiences", summary.getExperiences());
+        model.addAttribute("educations", summary.getEducations());
+        model.addAttribute("additionalEducations", summary.getAdditionEducations());
         model.addAttribute("skills", skills);
-        model.addAttribute("examplesCode", examplesCodes);
+        model.addAttribute("examplesCode", summary.getExamplesCodes());
 
         return "resumeForDB";
     }
