@@ -49,15 +49,6 @@ public class ResumeController {
     public String getAll(@RequestParam(value="id") int id, Model model) {
         Summary summary = resumeService.getSummary(id);
 
-        List<Skills> skills = summary.getSkills();
-        Collections.sort(skills, new Comparator<Skills>() {
-            public int compare(Skills o1, Skills o2) {
-                int exp1 = o1.getExperience();
-                int exp2 = o2.getExperience();
-                return Integer.compare(exp2, exp1);
-            }
-        });
-
         model.addAttribute("fio", summary.getFio());
         model.addAttribute("dob", summary.getDob());
         model.addAttribute("email", summary.getEmail());
@@ -68,10 +59,9 @@ public class ResumeController {
         model.addAttribute("experiences", summary.getExperiences());
         model.addAttribute("educations", summary.getEducations());
         model.addAttribute("additionalEducations", summary.getAdditionEducations());
-        model.addAttribute("skills", skills);
+        model.addAttribute("skills", summary.getSkills());
         model.addAttribute("examplesCode", summary.getExamplesCodes());
 
         return "resumeForDB";
     }
-
 }

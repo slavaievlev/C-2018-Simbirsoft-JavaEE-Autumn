@@ -37,6 +37,7 @@ public class Summary {
     private List<Experiences> experiences;
 
     @OneToMany(mappedBy = "summary")
+    @OrderBy("experience DESC")
     private List<Skills> skills;
 
     public List<Targets> getTargets() {
