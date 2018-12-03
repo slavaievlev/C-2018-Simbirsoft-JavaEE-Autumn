@@ -30,7 +30,7 @@ public class SwaggerConfig {
 
     private static ApiInfo buildApiInfo() {
         return new ApiInfo("REST API", null, "v1", null,
-                new Contact("SimbirSoft", "http://simbirsoft.com", null),
+                new Contact("", "", null),
                 null, null, Collections.emptyList());
     }
 }

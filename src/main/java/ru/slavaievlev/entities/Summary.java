@@ -2,7 +2,6 @@ package ru.slavaievlev.entities;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "SUMMARY")
@@ -37,6 +36,7 @@ public class Summary {
     private List<Experiences> experiences;
 
     @OneToMany(mappedBy = "summary")
+    @OrderBy("experience DESC")
     private List<Skills> skills;
 
     public void setTargets(List<Targets> targets) {

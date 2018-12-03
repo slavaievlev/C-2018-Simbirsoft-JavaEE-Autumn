@@ -1,65 +1,121 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Резюме</title>
-    <script type="text/javascript">
-        $.ajax({
-            url: "/resume/1",
-            success: function(data){
-                var summary=data;
-                alert( "Прибыли данные: " + data);
-                // $("#fio").load(json_object.getFio());
-            }
-        });
-    </script>
 </head>
 <body>
-<!--<p>-->
-    <!--<b>РЕЗЮМЕ. На должность Java-стажер.</b>-->
-    <!--<ul><p id="fio" th:text="' ФИО: ' + ${fio}" /></ul>-->
-<!--<ul><p th:text="' Дата рождения: ' + ${dob}" /></ul>-->
-<!--<ul><p th:text="' Номер телефона: ' + ${phone}" /></ul>-->
-<!--<ul><p th:text="' Email: ' + ${email}" /></ul>-->
-<!--<ul><p th:text="' Skype: ' + ${skype}" /></ul>-->
-<!--<ul>-->
-    <!--<b>Цель:</b>-->
-    <!--<tr th:each="target : ${targets}">-->
-        <!--<li th:text="${target.getTarget()}"></li>-->
-    <!--</tr>-->
-<!--</ul>-->
-<!--<ul>-->
-    <!--<b>Опыт работы:</b>-->
-    <!--<tr th:each="experience : ${experiences}">-->
-        <!--<li th:text="${experience.getExperience()}"></li>-->
-    <!--</tr>-->
-<!--</ul>-->
-<!--<ul>-->
-    <!--<b>Образование:</b>-->
-    <!--<tr th:each="education : ${educations}">-->
-        <!--<li th:text="${education.getEducation()}"></li>-->
-    <!--</tr>-->
-<!--</ul>-->
-<!--<ul>-->
-    <!--<b>Дополнительное образование:</b>-->
-    <!--<tr th:each="additionalEducation : ${additionalEducations}">-->
-        <!--<li th:text="${additionalEducation.getAdditioneducations()}"></li>-->
-    <!--</tr>-->
-<!--</ul>-->
-<!--<ul>-->
-    <!--<b>Навыки:</b>-->
-    <!--<tr th:each="skill : ${skills}">-->
-        <!--<li th:text="${skill.getSkill()} + ' (' + ${skill.getExperience()} + ' мес.' + ')'"></li>-->
-    <!--</tr>-->
-<!--</ul>-->
-<!--<ul>-->
-    <!--<b>Примеры кода:</b>-->
-    <!--<tr th:each="exampleCode : ${examplesCode}">-->
-        <!--<a th:href="${exampleCode.getLink()}" th:text="${exampleCode.getNameresource()}"></a>-->
-    <!--</tr>-->
-<!--</ul>-->
-<!--<ul><image th:src="${avatar}" width="340" /></ul>-->
-<!--</p>-->
+
+<div>
+    <input type="text" id="resumeid" size="10" maxlength="5" value="" />
+    <button onclick="getResume(document.getElementById('resumeid').value)">Найти резюме</button>
+</div>
+<div>
+    <input type="text" id="updateResumeNameField" size="10" maxlength="25" value="<Имя поля>" />
+    <input type="text" id="updateResumeIndexField" size="10" maxlength="2" value="<Индекс подполя>" />
+    <input type="text" id="updateResumeNewValueField" size="10" maxlength="25" value="<Новое значение>" />
+    <button onclick="putResume(document.getElementById('updateResumeNameField').value,
+        document.getElementById('updateResumeIndexField').value,
+        document.getElementById('updateResumeNewValueField').value,
+        document.getElementById('resumeid').value)">Изменить</button>
+    <script>
+        function putResume(nameField, indexField, valueField, idResume) {
+
+            var data = {
+                nameField: nameField,
+                indexField: indexField,
+                valueField: valueField
+            }
+
+            $.ajax({
+                url: '/resume/' + idResume,
+                type: 'PUT',
+                data: JSON.stringify(data),
+                contentType:"application/json; charset=utf-8",
+                dataType:"json",
+                success: function () {
+                    console.log("Пользователь изменен!");
+                    getResume(idResume);
+                }
+            });
+        }
+    </script>
+</div>
+
+<div><b>РЕЗЮМЕ. На должность Java-стажер.</b></div>
+<div id="resume">
+    <script>
+        function getResume(id) {
+            $.ajax({
+                url : '/resume/' + id,
+                datatype : 'json',
+                type : "get",
+                contentType : "application/json",
+                success : function(data) {
+                    console.log(data);
+                    var newResumeDiv = document.createElement('div');
+
+                    newResumeDiv.innerHTML += "<ul>ФИО: " + data['fio'] + "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul>Дата рождения: " + data['dob'] + "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul>Телефон: " + data['phone'] + "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul>Email: " + data['email'] + "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul>Skype: " + data['skype'] + "</ul>";
+
+                    var i;
+                    newResumeDiv.innerHTML += "<ul><b>Цель:</b>";
+                    window.targets = data['targets'];
+                    for (i = 0; i < window.targets.length; i++) {
+                        newResumeDiv.innerHTML += "<li>" + window.targets[i]['target']+ "</li>";
+                    }
+                    newResumeDiv.innerHTML += "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul><b>Опыт работы:</b>";
+                    window.experiences = data['experiences'];
+                    for (i = 0; i < window.experiences.length; i++) {
+                        newResumeDiv.innerHTML += "<li>" + window.experiences[i]['experience']+ "</li>";
+                    }
+                    newResumeDiv.innerHTML += "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul><b>Образование:</b>";
+                    window.educations = data['educations'];
+                    for (i = 0; i < window.educations.length; i++) {
+                        newResumeDiv.innerHTML += "<li>" + window.educations[i]['education']+ "</li>";
+                    }
+                    newResumeDiv.innerHTML += "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul><b>Дополнительное образование:</b>";
+                    window.additionEducations = data['additionEducations'];
+                    for (i = 0; i < window.additionEducations.length; i++) {
+                        newResumeDiv.innerHTML += "<li>" + window.additionEducations[i]['additioneducations']+ "</li>";
+                    }
+                    newResumeDiv.innerHTML += "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul><b>Навыки:</b>";
+                    window.skills = data['skills'];
+                    for (i = 0; i < window.skills.length; i++) {
+                        newResumeDiv.innerHTML += "<li>" + window.skills[i]['skill'] + " (" + window.skills[i]['experience'] + " мес.)" + "</li>";
+                    }
+                    newResumeDiv.innerHTML += "</ul>";
+
+                    newResumeDiv.innerHTML += "<ul><b>Примеры кода:</b>";
+                    window.examplesCodes = data['examplesCodes'];
+                    for (i = 0; i < window.examplesCodes.length; i++) {
+                        newResumeDiv.innerHTML += "<li><a href=\"" + window.examplesCodes[i]['link'] + "\">" + window.examplesCodes[i]['nameresource'] + "</a></li>";
+                    }
+                    newResumeDiv.innerHTML += "</ul>";
+
+                    var resumeDiv = document.getElementById('resume');
+                    resumeDiv.innerHTML = '';
+                    resumeDiv.appendChild(newResumeDiv);
+                }
+            });
+        }
+    </script>
+</div>
 </body>
 </html>
